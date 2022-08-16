@@ -2,7 +2,7 @@
 
 include_once './../../config/token.php';
 
-define('API_URL', 'https://api.telegram.org/bot'.BOT_TOKEN.'/');
+define('API_URL', 'https://api.telegram.org/bot'.TOKEN_PORUCHIK.'/');
 
 function apiRequestWebhook($method, $parameters) {
   if (!is_string($method)) {

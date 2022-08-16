@@ -1,7 +1,8 @@
-Place token.php file to this folder with the following content:
+Place tokens.php file to this folder with the following content:
 
 <?php
 
-define('BOT_TOKEN', '1234567890:ABCDEFJABCDEFJABCDEFJABCDEFJABCDEFJ');
+define('TOKEN_BOT1_NAME', '1234567890:ABCDEFGABCDEFGABCDEFGABCDEFGABCDEFG');
+define('TOKEN_BOT2_NAME', '0987654321:GFEDCBAGFEDCBAGFEDCBAGFEDCBAGFEDCBA');
 
 ?>
