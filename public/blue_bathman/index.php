@@ -10,7 +10,7 @@ function processMessage($message)
 
   if (isset($message['text']))
   {
-    $text = mb_strtolower($message['text']);
+    $text = mb_convert_case($message['text'], MB_CASE_LOWER, "UTF-8");
 
     if ($text === "др")
     {
