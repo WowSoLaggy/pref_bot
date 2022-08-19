@@ -135,6 +135,8 @@ function processMessage($message) {
       apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
     } else if ($text === "Дегть" || $text === "дегть") {
       apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Хуй'));
+    } else if ($text === "Косово" || $text === "косово" || $text === "КОСОВО") {
+      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'это Сербия!'));
     } else if (strpos($text, "/stop") === 0) {
       // stop now
     } else {
