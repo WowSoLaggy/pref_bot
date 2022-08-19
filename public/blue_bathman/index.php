@@ -12,7 +12,7 @@ function getOutput()
   foreach ($users as $user)
     $out .= $user->name.'\n';
 
-  return 'qwer';
+  return $out;
 }
 
 
