@@ -135,11 +135,11 @@ function processMessage($message) {
       apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Nice to meet you'));
     } else if (strpos($text, "/stop") === 0) {
       // stop now
-    } else if ($text === "Дегть") {
-      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'хуй'));
+    } else {
+      apiRequestWebhook("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => 'Cool'));
     }
   } else {
-    //apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
+    apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'I understand only text messages'));
   }
 }
 
@@ -164,5 +164,3 @@ if (!$update) {
 if (isset($update["message"])) {
   processMessage($update["message"]);
 }
-
-?>
