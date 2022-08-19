@@ -1,3 +1,3 @@
 <?php
-phpinfo();
+echo "This page is for bots only!";
 ?>
