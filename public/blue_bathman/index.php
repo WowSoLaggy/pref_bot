@@ -16,6 +16,10 @@ function processMessage($message)
     {
       apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Привет!'));
     }
+    else
+    {
+      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $text));
+    }
   }
 }
 
