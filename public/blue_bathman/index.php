@@ -11,6 +11,7 @@ function processMessage($message)
   if (isset($message['text']))
   {
     $text = strtolower($message['text']);
+    $text = strtolower($text);
 
     if ($text === "др")
     {
