@@ -1,15 +1,16 @@
 <?php
 
 include_once('api.php');
-include_once('reader.php');
 
 
 function getOutput()
 {
+  include_once('reader.php');
+
   $out = "";
 
-  foreach ($users as &$user)
-    $out .= $user->name."\n";
+  foreach ($users as $user)
+    $out .= $user->name.'\n';
 
   return $out;
 }
@@ -35,6 +36,7 @@ function processMessage($message)
 //
 // MAIN
 //
+echo(getOutput());
 
 
 $content = file_get_contents("php://input");

@@ -11,7 +11,10 @@ function connect()
     throw new Exception('Cannot connect to DB: Please check connection settings in "secrets.php" file.');
   
   $link = mysqli_connect($dbHost, $dbUser, $dbPass);
-  mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error());
+  if (!$link)
+    throw new Exception(mysqli_connect_error());
+
+  mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error($link));
   mysqli_query($link, "SET NAMES utf8;");
   
   return $link;
