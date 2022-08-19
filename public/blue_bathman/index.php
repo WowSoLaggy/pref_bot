@@ -3,6 +3,17 @@
 include_once('api.php');
 
 
+function getOutput()
+{
+  $out = "";
+
+  foreach ($users as &$user)
+    $out .= $user->name."\n";
+
+  return $out;
+}
+
+
 function processMessage($message)
 {
   $message_id = $message['message_id'];
@@ -14,11 +25,7 @@ function processMessage($message)
 
     if ($text === "др")
     {
-      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => 'Привет!'));
-    }
-    else
-    {
-      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $text));
+      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => getOutput()));
     }
   }
 }
