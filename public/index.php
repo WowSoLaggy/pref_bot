@@ -1,5 +1,5 @@
 <?
-echo('hello');
+echo "hello";
 phpinfo();
-echo('world');
+echo "world";
 ?>
