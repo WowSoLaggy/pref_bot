@@ -27,7 +27,11 @@ function processMessage($message)
 
     if ($text === "др")
     {
-      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => getOutput()));
+      $output = getOutput();
+      if (empty($output))
+        $output = "NO OUTPUT";
+
+      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $output));
     }
   }
 }
