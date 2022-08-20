@@ -5,6 +5,22 @@ include_once('api.php');
 
 function getOutput()
 {
+  include('./../../config/secrets.php');
+  
+  if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
+    return 'Cannot connect to DB: Please check connection settings in "secrets.php" file.';
+  
+  $link = mysqli_connect($dbHost, $dbUser, $dbPass);
+  if (!$link)
+    return mysqli_connect_error();
+
+  mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error($link));
+  mysqli_query($link, "SET NAMES utf8;");
+  
+  return "meow";
+  
+  //
+
   include_once('reader.php');
 
   $out = "";
@@ -12,9 +28,7 @@ function getOutput()
   foreach ($users as $user)
     $out .= $user->name.'\n';
 
-  return "Hello";
-  //return count($users);
-  //return $out;
+  return $out;
 }
 
 
