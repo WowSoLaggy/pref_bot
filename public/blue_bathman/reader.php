@@ -55,6 +55,7 @@ function getUsersConn($connection)
     $user->id = mysqli_result($result, $i, 'id');
     $user->name = mysqli_result($result, $i, 'name');
     $user->date = mysqli_result($result, $i, 'date');
+    $user->bday = date('m-d', strtotime($user->date));
 
     array_push($users, $user);
   }
@@ -66,7 +67,7 @@ function getUsersConn($connection)
 
 function users_sorter($lhv, $rhv)
 {
-  return strtotime($lhv->date) - strtotime($rhv->date);
+  return $lhv->bday - $rhv->bday;
 }
 
 
@@ -82,6 +83,13 @@ function getUsers()
 
   // Sort users
   usort($users, "users_sorter");
+
+  // Move users with passed bday to the end of list
+  foreach ($users as &$user)
+  {
+    if ($user->bday > date('m-d'))
+      array_push($users, array_shift($users));
+  }
 
   return $users;
 }

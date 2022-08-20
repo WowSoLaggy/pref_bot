@@ -10,8 +10,11 @@ function getOutput()
 
   $out = "";
 
-  foreach ($users as $user)
-    $out .= $user->name.chr(10);
+  foreach ($users as &$user)
+  {
+    $date_formatted = date('d M', strtotime($user->date));
+    $out .= $date_formatted.' - '.$user->name.'<br>'.chr(10);
+  }
 
   return $out;
 }
