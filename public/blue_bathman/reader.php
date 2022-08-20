@@ -42,7 +42,7 @@ function mysqli_result($res, $row = 0, $col = 0)
 }
 
 
-function getUsers($connection)
+function getUsersConn($connection)
 {
   $users = array();
   
@@ -65,25 +65,25 @@ function getUsers($connection)
 }
 
 
-//
-// MAIN
-//
-
-
-// Get data
-
-$connection = connect();
-
-$users = getUsers($connection);
-
-disconnect($connection);
-
-// Sort users
-
-function users_sorter($lhv, $rhv)
+function getUsers()
 {
-  return strtotime($lhv->date) - strtotime($rhv->date);
+  // Get data
+
+  $connection = connect();
+
+  $users = getUsersConn($connection);
+
+  disconnect($connection);
+
+  // Sort users
+
+  function users_sorter($lhv, $rhv)
+  {
+    return strtotime($lhv->date) - strtotime($rhv->date);
+  }
+  usort($users, "users_sorter");
+
+  return $users;
 }
-usort($users, "users_sorter");
 
 ?>
