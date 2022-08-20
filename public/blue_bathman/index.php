@@ -31,7 +31,7 @@ function processMessage($message)
       if (empty($output))
         $output = "NO OUTPUT";
 
-      apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $output));
+      sendMessage($output, $chat_id));
     }
   }
 }
