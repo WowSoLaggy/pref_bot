@@ -65,9 +65,10 @@ function getUsersConn($connection)
   return $users;
 }
 
-function users_sorter($lhv, $rhv)
+
+function users_sorter($user1, $user2)
 {
-  return $lhv->bday - $rhv->bday;
+  return $user1->bday - $user2->bday;
 }
 
 
@@ -85,9 +86,9 @@ function getUsers()
   usort($users, "users_sorter");
 
   // Move users with passed bday to the end of list
-  foreach ($users as &$user)
+  for ($i = 0; $i < count($users); $i++)
   {
-    if ($user->bday > date('m-d'))
+    if ($users[$i]->bday < date('m-d'))
       array_push($users, array_shift($users));
   }
 
