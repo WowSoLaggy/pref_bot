@@ -11,7 +11,7 @@ function getOutput()
   $out = "";
 
   foreach ($users as $user)
-    $out .= $user->name.'\n';
+    $out .= $user->name.'<br>';
 
   return $out;
 }
