@@ -6,6 +6,7 @@ include_once('api.php');
 function getOutput()
 {
   include('./../../config/secrets.php');
+  include_once('reader.php');
   
   if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
     return 'Cannot connect to DB: Please check connection settings in "secrets.php" file.';
@@ -16,8 +17,11 @@ function getOutput()
 
   mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error($link));
   mysqli_query($link, "SET NAMES utf8;");
-  
-  return "meow";
+
+  $arr = getUsers($link);
+  $num = count($arr);
+
+  return $num;
   
   //
 
