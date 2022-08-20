@@ -64,10 +64,15 @@ function getUsersConn($connection)
   return $users;
 }
 
+function users_sorter($lhv, $rhv)
+{
+  return strtotime($lhv->date) - strtotime($rhv->date);
+}
+
 
 function getUsers()
 {
-  // Get data
+  // Get raw users data
 
   $connection = connect();
 
@@ -76,11 +81,6 @@ function getUsers()
   disconnect($connection);
 
   // Sort users
-
-  function users_sorter($lhv, $rhv)
-  {
-    return strtotime($lhv->date) - strtotime($rhv->date);
-  }
   usort($users, "users_sorter");
 
   return $users;
