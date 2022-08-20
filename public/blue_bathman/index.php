@@ -11,7 +11,7 @@ function getOutput()
   $out = "";
 
   foreach ($users as $user)
-    $out .= $user->name.'<br>';
+    $out .= $user->name.chr(10);
 
   return $out;
 }
