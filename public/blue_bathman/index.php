@@ -31,7 +31,7 @@ function processMessage($message)
       if (empty($output))
         $output = "NO OUTPUT";
 
-      sendMessage($output, $chat_id));
+      sendMessage($output, $chat_id);
     }
   }
 }
