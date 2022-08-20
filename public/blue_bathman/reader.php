@@ -6,17 +6,25 @@ include_once('user.php');
 function connect()
 {
   include('./../../config/secrets.php');
+
+  echo("1");
   
   if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
     throw new Exception('Cannot connect to DB: Please check connection settings in "secrets.php" file.');
   
+  echo("2");
+
   $link = mysqli_connect($dbHost, $dbUser, $dbPass);
   if (!$link)
     throw new Exception(mysqli_connect_error());
 
+  echo("3");
+
   mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error($link));
   mysqli_query($link, "SET NAMES utf8;");
   
+  echo("4");
+
   return $link;
 }
 
