@@ -16,6 +16,9 @@ function getOutput()
     $user_month = date('M', strtotime($user->date));
     if ($cur_month != $user_month)
     {
+      if (!empty($cur_month))
+        $out .= chr(10);
+      
       $out .= "---------------------".chr(10);
       $out .= $user_month.chr(10);
       $out .= "---------------------".chr(10);
