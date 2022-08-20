@@ -9,11 +9,22 @@ function getOutput()
   $users = getUsers();
 
   $out = "";
+  $cur_month = "";
 
   foreach ($users as &$user)
   {
+    $user_month = date('M', strtotime($user->date));
+    if ($cur_month != $user_month)
+    {
+      $out .= "-=-=-=-=-=-=-=-=-=-=-=-=-<br>".chr(10);
+      $out .= $user_month.'<br>'.chr(10);
+      $out .= "-=-=-=-=-=-=-=-=-=-=-=-=-<br>".chr(10);
+    }
+
     $date_formatted = date('d M', strtotime($user->date));
     $out .= $date_formatted.' - '.$user->name.'<br>'.chr(10);
+
+    $cur_month = $user_month;
   }
 
   return $out;
