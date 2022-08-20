@@ -12,7 +12,8 @@ function getOutput()
   foreach ($users as $user)
     $out .= $user->name.'\n';
 
-  return count($users);
+  return "Hello";
+  //return count($users);
   //return $out;
 }
 
