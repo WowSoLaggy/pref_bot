@@ -5,7 +5,7 @@ include_once('api.php');
 
 function isAuth($user_id)
 {
-  $green_users = array(2, 3);
+  $green_users = array(305099932);
   return in_array($user_id, $green_users);
 }
 
@@ -50,18 +50,18 @@ function processMessage($message)
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  /*if (!isAuth($user_id))
-  {
-    sendMessage('Sorry, you are not authorized', $chat_id);
-    return;
-  }*/
-
   if (isset($message['text']))
   {
+    if (!isAuth($user_id))
+    {
+      sendMessage('Sorry, you are not authorized', $chat_id);
+      return;
+    }
+
     $text = mb_convert_case($message['text'], MB_CASE_LOWER, "UTF-8");
 
     if ($text === "др")
-      sendMessage($user_id, $chat_id);
+      sendMessage(getBDays(), $chat_id);
   }
 }
 
