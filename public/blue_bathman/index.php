@@ -81,8 +81,6 @@ function processMessage($message)
 //
 // MAIN
 //
-echo(isAuth(2) ? 'true' : 'false');
-echo('<br>');
 echo(getBDays());
 
 
