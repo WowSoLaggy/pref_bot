@@ -5,7 +5,10 @@ include_once('api.php');
 
 function isAuth($user_id)
 {
-  $green_users = array(305099932);
+  $green_users = array(
+    305099932, // ae
+    1092343373, // N
+  );
   return in_array($user_id, $green_users);
 }
 
