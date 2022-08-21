@@ -3,6 +3,13 @@
 include_once('api.php');
 
 
+function isAuth($user_id)
+{
+  $green_users = array(2, 3);
+  return in_array($user_id, $green_users);
+}
+
+
 function getBDays()
 {
   include_once('reader.php');
@@ -40,15 +47,21 @@ function getBDays()
 
 function processMessage($message)
 {
-  $message_id = $message['message_id'];
+  $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
+
+  /*if (!isAuth($user_id))
+  {
+    sendMessage('Sorry, you are not authorized', $chat_id);
+    return;
+  }*/
 
   if (isset($message['text']))
   {
     $text = mb_convert_case($message['text'], MB_CASE_LOWER, "UTF-8");
 
     if ($text === "др")
-      sendMessage(getBDays(), $chat_id);
+      sendMessage($user_id, $chat_id);
   }
 }
 
@@ -56,6 +69,8 @@ function processMessage($message)
 //
 // MAIN
 //
+echo(isAuth(2) ? 'true' : 'false');
+echo('<br>');
 echo(getBDays());
 
 
