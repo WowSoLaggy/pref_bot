@@ -2,7 +2,11 @@
 
 function logText($text)
 {
-  file_put_contents('/var/log/blue_bathman_bot/log_'.date("Y.m.d").'.log', $text, FILE_APPEND);
+  $dir_path = '/var/log/blue_bathman_bot';
+  if (!file_exists($dir_path))
+    mkdir($dir_path, 0777, true);
+
+  file_put_contents($dir_path.'/log_'.date("Y.m.d").'.log', $text.PHP_EOL, FILE_APPEND);
 }
 
 function logMessage($message, $isAuth)
