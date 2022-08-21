@@ -24,7 +24,12 @@ function getBDays()
     }
 
     $date_formatted = date('d M', strtotime($user->date));
-    $out .= $date_formatted.' - '.$user->name.chr(10);
+    $date_birth = new DateTime($user->date);
+    $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
+    $date_diff = $date_now->diff($date_birth);
+    $years_full = $date_diff->y + 1;
+
+    $out .= $date_formatted.' - '.$user->name.' ('.$years_full.')'.chr(10);
 
     $cur_month = $user_month;
   }
