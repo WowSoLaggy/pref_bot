@@ -88,7 +88,7 @@ function getUsers()
   // Move users with passed bday to the end of list
   for ($i = 0; $i < count($users); $i++)
   {
-    if (strtotime($users[0]->bday) < strtotime(date('2020-m-d')))
+    if (strtotime($users[0]->bday) < strtotime(date('2020-m-1')))
       array_push($users, array_shift($users));
   }
 
