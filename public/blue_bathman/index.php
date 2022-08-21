@@ -48,7 +48,7 @@ function getBDays()
     $date_diff = $date_now->diff($date_birth);
     $years_full = $date_diff->y + 1;
 
-    $out .= $date_formatted.' - '.$user->name.' ('.$years_full.')'.chr(10);
+    $out .= $date_formatted.' - '.$user->name.' ('.$years_full.' yo.)'.chr(10);
 
     $cur_month = $user_month;
   }
