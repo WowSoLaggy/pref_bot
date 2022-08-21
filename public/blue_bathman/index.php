@@ -19,9 +19,8 @@ function getOutput()
       if (!empty($cur_month))
         $out .= chr(10);
       
-      //$out .= "---------------------".chr(10);
       $out .= $user_month.chr(10);
-      $out .= "---------------------".chr(10);
+      $out .= "-----------------------------------".chr(10);
     }
 
     $date_formatted = date('d M', strtotime($user->date));
