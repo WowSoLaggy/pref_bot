@@ -3,7 +3,7 @@
 include_once('api.php');
 
 
-function getOutput()
+function getBDays()
 {
   include_once('reader.php');
   $users = getUsers();
@@ -43,13 +43,7 @@ function processMessage($message)
     $text = mb_convert_case($message['text'], MB_CASE_LOWER, "UTF-8");
 
     if ($text === "др")
-    {
-      $output = getOutput();
-      if (empty($output))
-        $output = "NO OUTPUT";
-
-      sendMessage($output, $chat_id);
-    }
+      sendMessage(getBDays(), $chat_id);
   }
 }
 
