@@ -75,10 +75,7 @@ function processMessage($message)
       return;
     }
 
-    $text = mb_convert_case($message['text'], MB_CASE_LOWER, "UTF-8");
-
-    if ($text === "др")
-      sendMessage(getBDays(), $chat_id);
+    sendMessage(getBDays(), $chat_id);
   }
 }
 
