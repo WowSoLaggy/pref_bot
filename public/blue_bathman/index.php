@@ -8,6 +8,15 @@ function isAuth($user_id)
   $green_users = array(
     305099932, // ae
     1092343373, // N
+    1878144297, // degt
+    5236221588, // Nik
+    1857829702, // Slava
+    225599231, // Nemkin
+    322416610, // Vano
+    1753858804, // Kozlov
+    582065565, // Den
+    1166111956, // Goryunov
+    1605467087, // Atyaka
   );
   return in_array($user_id, $green_users);
 }
