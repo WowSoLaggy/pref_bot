@@ -46,7 +46,12 @@ function getBDays()
     $date_birth = new DateTime($user->date);
     $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
     $date_diff = $date_now->diff($date_birth);
-    $years_full = $date_diff->y + 1;
+    $years_full = $date_diff->y;
+    if (strtotime($user->bday) >= strtotime(date('2020-m-d')) ||
+      date('m') != date('m', strtotime($user->bday)))
+    {
+      $years_full++;
+    }
 
     $out .= $date_formatted.' - '.$user->name.' ('.$years_full.' yo.)'.chr(10);
 
