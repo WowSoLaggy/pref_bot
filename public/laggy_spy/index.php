@@ -39,7 +39,6 @@ function processMessage($message)
 //
 // MAIN
 //
-echo(getBDays());
 
 
 $content = file_get_contents("php://input");
