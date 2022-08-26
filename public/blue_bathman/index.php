@@ -18,6 +18,7 @@ function isAuth($user_id)
     582065565, // Den
     1166111956, // Goryunov
     1605467087, // Atyaka
+    246963951, // Ira Nemkina
   );
   return in_array($user_id, $green_users);
 }
