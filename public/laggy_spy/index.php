@@ -1,6 +1,6 @@
 <?php
 
-include_once('api.php');
+include_once('send_message.php');
 include_once('log_message.php');
 
 
@@ -13,7 +13,7 @@ function get_is_auth(string $user_id)
 }
 
 
-function processMessage(array $message)
+function process_message(array $message)
 {
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
@@ -24,11 +24,11 @@ function processMessage(array $message)
   {
     if (!$is_auth)
     {
-      sendMessage('Sorry, you are not authorized', $chat_id);
+      send_message('Sorry, you are not authorized', $chat_id);
     }
     else
     {
-      sendMessage('Hi Anton!', $chat_id);
+      send_message('Hi Anton!', $chat_id);
     }
   }
 
@@ -51,4 +51,4 @@ if (!$update)
 }
 
 if (isset($update["message"]))
-  processMessage($update["message"]);
+  process_message($update["message"]);

@@ -1,9 +1,5 @@
 <?php
 
-include_once './../../config/tokens.php';
-
-define('API_URL', 'https://api.telegram.org/bot'.TOKEN_LAGGY_SPY.'/');
-
 function exec_curl_request($handle) {
   $response = curl_exec($handle);
 
@@ -40,7 +36,7 @@ function exec_curl_request($handle) {
   return $response;
 }
 
-function apiRequest($method, $parameters) {
+function api_request(string $url, string $method, array $parameters) {
   if (!is_string($method)) {
     error_log("Method name must be a string\n");
     return false;
@@ -59,9 +55,9 @@ function apiRequest($method, $parameters) {
       $val = json_encode($val);
     }
   }
-  $url = API_URL.$method.'?'.http_build_query($parameters);
+  $full_url = $url.$method.'?'.http_build_query($parameters);
 
-  $handle = curl_init($url);
+  $handle = curl_init($full_url);
   curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 5);
   curl_setopt($handle, CURLOPT_TIMEOUT, 60);
@@ -69,9 +65,9 @@ function apiRequest($method, $parameters) {
   return exec_curl_request($handle);
 }
 
-function sendMessage($text, $chat_id)
+function send_message_url(string $url, string $text, string $chat_id)
 {
-  apiRequest("sendMessage", array('chat_id' => $chat_id, "text" => $text));
+  api_request($url, "sendMessage", array('chat_id' => $chat_id, "text" => $text));
 }
 
 ?>
