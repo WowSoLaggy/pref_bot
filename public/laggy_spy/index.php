@@ -18,11 +18,11 @@ function processMessage($message)
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  $is_auth = is_auth($user_id);
+  $is_auth = get_is_auth($user_id);
   
   if (isset($message['text']))
   {
-    if (!isAuth)
+    if (!$is_auth)
     {
       sendMessage('Sorry, you are not authorized', $chat_id);
     }
@@ -32,7 +32,7 @@ function processMessage($message)
     }
   }
 
-  log_message($message, $isAuth);
+  log_message($message, $is_auth);
 }
 
 
