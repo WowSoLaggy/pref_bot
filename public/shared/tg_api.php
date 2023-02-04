@@ -65,9 +65,4 @@ function api_request(string $url, string $method, array $parameters) {
   return exec_curl_request($handle);
 }
 
-function send_message_url(string $url, string $text, string $chat_id)
-{
-  api_request($url, "sendMessage", array('chat_id' => $chat_id, "text" => $text));
-}
-
 ?>

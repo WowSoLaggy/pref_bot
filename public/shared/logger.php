@@ -4,12 +4,12 @@
 // Don't forget to create a dir for logs and set owner:
 // chmod www-data:www-data /var/log/my_folder
 
-function log_text(string $text, string $dir_path)
+function log_text(string $text)
 {
-  file_put_contents($dir_path.'/log_'.date("Y_m_d").'.log', $text.PHP_EOL, FILE_APPEND);
+  file_put_contents(DIR_PATH.'/log_'.date("Y_m_d").'.log', $text.PHP_EOL, FILE_APPEND);
 }
 
-function log_message_auth(array $message, bool $is_auth, string $dir_path)
+function log_message(array $message, bool $is_auth)
 {
   $user_id = $message['from']['id'];
   $user_name = $message['from']['username'];
@@ -25,7 +25,7 @@ function log_message_auth(array $message, bool $is_auth, string $dir_path)
   $log .= ' - ';
   $log .= $has_text ? $message['text'] : 'NO TEXT';
 
-  log_text($log, $dir_path);
+  log_text($log);
 }
 
 ?>

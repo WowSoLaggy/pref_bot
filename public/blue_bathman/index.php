@@ -1,7 +1,9 @@
 <?php
 
-include_once('log_message.php');
-include_once('send_message.php');
+include_once('bot_conf.php');
+
+include_once('./../shared/commands.php');
+include_once('./../shared/logger.php');
 
 
 function isAuth($user_id)
