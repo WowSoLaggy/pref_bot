@@ -1,7 +1,7 @@
 <?php
 
-include_once('send_message.php');
 include_once('log_message.php');
+include_once('send_message.php');
 
 
 function get_is_auth(string $user_id)
