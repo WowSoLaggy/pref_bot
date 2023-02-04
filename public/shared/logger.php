@@ -1,13 +1,15 @@
 <meta charset="UTF-8">
 <?php
 
-function logText($text)
+// Don't forget to create a dir for logs and set owner:
+// chmod www-data:www-data /var/log/my_folder
+
+function log_text(string $text, string $dir_path)
 {
-  $dir_path = '/var/log/laggy_spy_bot';
   file_put_contents($dir_path.'/log_'.date("Y_m_d").'.log', $text.PHP_EOL, FILE_APPEND);
 }
 
-function logMessage($message, $isAuth)
+function log_message_auth(string $message, bool $is_auth, string $dir_path)
 {
   $user_id = $message['from']['id'];
   $user_name = $message['from']['username'];
@@ -19,11 +21,11 @@ function logMessage($message, $isAuth)
   $log .= $user_name.' ('.$user_id.') ';
   $log .= $is_bot ? '(BOT) ' : '';
   $log .= '- ';
-  $log .= $isAuth ? 'GRANT' : 'DENY';
+  $log .= $is_auth ? 'GRANT' : 'DENY';
   $log .= ' - ';
   $log .= $has_text ? $message['text'] : 'NO TEXT';
 
-  logText($log);
+  logText($log, $dir_path);
 }
 
 ?>

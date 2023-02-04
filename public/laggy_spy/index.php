@@ -1,13 +1,13 @@
 <?php
 
 include_once('api.php');
-include_once('logger.php');
+include_once('log_message.php');
 
 
-function isAuth($user_id)
+function get_is_auth(string $user_id)
 {
   $green_users = array(
-    305099932, // ae
+    '305099932', // ae
   );
   return in_array($user_id, $green_users);
 }
@@ -18,7 +18,7 @@ function processMessage($message)
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  $isAuth = isAuth($user_id);
+  $is_auth = is_auth($user_id);
   
   if (isset($message['text']))
   {
@@ -32,7 +32,7 @@ function processMessage($message)
     }
   }
 
-  logMessage($message, $isAuth);
+  log_message($message, $isAuth);
 }
 
 
