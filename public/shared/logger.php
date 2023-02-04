@@ -25,7 +25,7 @@ function log_message_auth(array $message, bool $is_auth, string $dir_path)
   $log .= ' - ';
   $log .= $has_text ? $message['text'] : 'NO TEXT';
 
-  logText($log, $dir_path);
+  log_text($log, $dir_path);
 }
 
 ?>
