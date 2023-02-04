@@ -4,41 +4,93 @@ include_once('log_message.php');
 include_once('send_message.php');
 
 
-function get_is_auth(string $user_id)
+function isAuth($user_id)
 {
   $green_users = array(
-    '305099932', // ae
+    305099932, // ae
+    1092343373, // N
+    1878144297, // degt
+    5236221588, // Nik
+    1857829702, // Slava
+    225599231, // Nemkin
+    322416610, // Vano
+    1753858804, // Kozlov
+    582065565, // Den
+    1166111956, // Goryunov
+    1605467087, // Atyaka
+    246963951, // Ira Nemkina
   );
   return in_array($user_id, $green_users);
 }
 
 
-function process_message(array $message)
+function getBDays()
+{
+  include_once('reader.php');
+  $users = getUsers();
+
+  $out = "";
+  $cur_month = "";
+
+  foreach ($users as &$user)
+  {
+    $user_month = date('M', strtotime($user->date));
+    if ($cur_month != $user_month)
+    {
+      if (!empty($cur_month))
+        $out .= chr(10);
+      
+      $out .= $user_month.chr(10);
+      $out .= "-----------------------------------".chr(10);
+    }
+
+    $date_formatted = date('d M', strtotime($user->date));
+    $date_birth = new DateTime($user->date);
+    $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
+    $date_diff = $date_now->diff($date_birth);
+    $years_full = $date_diff->y;
+    if (strtotime($user->bday) >= strtotime(date('2020-m-d')) ||
+      date('m') != date('m', strtotime($user->bday)))
+    {
+      $years_full++;
+    }
+
+    $out .= $date_formatted.' - '.$user->name.' ('.$years_full.' yo.)'.chr(10);
+
+    $cur_month = $user_month;
+  }
+
+  return $out;
+}
+
+
+function process_message($message)
 {
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  $is_auth = get_is_auth($user_id);
+  $isAuth = isAuth($user_id);
   
   if (isset($message['text']))
   {
-    if (!$is_auth)
+    if (!isAuth)
     {
       send_message('Sorry, you are not authorized', $chat_id);
     }
     else
     {
-      send_message('Hi Anton!', $chat_id);
+      send_message(getBDays(), $chat_id);
     }
   }
 
-  log_message($message, $is_auth);
+  log_message($message, $isAuth);
 }
 
 
 //
 // MAIN
 //
+echo(getBDays());
 
 
 $content = file_get_contents("php://input");
