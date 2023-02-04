@@ -105,7 +105,7 @@ function process_message($message)
       send_message('Sorry, you are not authorized', $chat_id);
   }
 
-  log_message($message, $isAuth);
+  log_message($message, $is_auth);
 }
 
 
