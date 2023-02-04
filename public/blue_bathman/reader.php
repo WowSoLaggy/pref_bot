@@ -1,6 +1,6 @@
 <?php
 
-include_once('user.php');
+include_once('bday.php');
 
 
 function connect()
@@ -42,57 +42,52 @@ function mysqli_result($res, $row = 0, $col = 0)
 }
 
 
-function getUsersConn($connection)
+function get_bdays_from_db($connection)
 {
-  $users = array();
+  $bdays = array();
   
-  $result = mysqli_query($connection, "SELECT id, name, date FROM users_tbl");
-  $num_users = mysqli_num_rows($result);
-  for ($i = 0; $i < $num_users; $i++)
+  $result = mysqli_query($connection, "SELECT id, name, date FROM bdays_tbl");
+  $num_bdays = mysqli_num_rows($result);
+  for ($i = 0; $i < $num_bdays; $i++)
   {
-    $user = new User();
+    $bday = new BDay();
 
-    $user->id = mysqli_result($result, $i, 'id');
-    $user->name = mysqli_result($result, $i, 'name');
-    $user->date = mysqli_result($result, $i, 'date');
-    $user->bday = date('2020-m-d', strtotime($user->date));
+    $bday->id = mysqli_result($result, $i, 'id');
+    $bday->name = mysqli_result($result, $i, 'name');
+    $bday->date = mysqli_result($result, $i, 'date');
+    $bday->bday = date('2020-m-d', strtotime($bday->date));
 
-    array_push($users, $user);
+    array_push($bdays, $bday);
   }
 
   mysqli_free_result($result);
 
-  return $users;
+  return $bdays;
 }
 
 
-function users_sorter($user1, $user2)
+function bdays_sorter($user1, $user2)
 {
   return strtotime($user1->bday) - strtotime($user2->bday);
 }
 
 
-function getUsers()
+function get_bdays()
 {
-  // Get raw users data
-
   $connection = connect();
-
-  $users = getUsersConn($connection);
-
+  $bdays = get_bdays_from_db($connection);
   disconnect($connection);
 
-  // Sort users
-  usort($users, "users_sorter");
+  usort($bdays, "bdays_sorter");
 
-  // Move users with passed bday to the end of list
-  for ($i = 0; $i < count($users); $i++)
+  // Move bdays with passed bday to the end of list
+  for ($i = 0; $i < count($bdays); $i++)
   {
-    if (strtotime($users[0]->bday) < strtotime(date('2020-m-1')))
-      array_push($users, array_shift($users));
+    if (strtotime($bdays[0]->bday) < strtotime(date('2020-m-1')))
+      array_push($bdays, array_shift($bdays));
   }
 
-  return $users;
+  return $bdays;
 }
 
 ?>
