@@ -1,6 +1,6 @@
 <?php
 
-class User
+class BDay
 {
   public $id = 0;
   public $name = "";

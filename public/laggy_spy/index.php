@@ -6,7 +6,15 @@ include_once('./../shared/commands.php');
 include_once('./../shared/logger.php');
 
 
-function isAuth($user_id)
+function get_is_admin(string $user_id)
+{
+  $green_users = array(
+    305099932, // ae
+  );
+  return in_array($user_id, $green_users);
+}
+
+function get_is_user(string $user_id)
 {
   $green_users = array(
     305099932, // ae
@@ -26,40 +34,40 @@ function isAuth($user_id)
 }
 
 
-function getBDays()
+function get_bdays_formatted()
 {
   include_once('reader.php');
-  $users = getUsers();
+  $bdays = get_bdays();
 
   $out = "";
   $cur_month = "";
 
-  foreach ($users as &$user)
+  foreach ($bdays as &$bday)
   {
-    $user_month = date('M', strtotime($user->date));
-    if ($cur_month != $user_month)
+    $bday_month = date('M', strtotime($bday->date));
+    if ($cur_month != $bday_month)
     {
       if (!empty($cur_month))
         $out .= chr(10);
       
-      $out .= $user_month.chr(10);
+      $out .= $bday_month.chr(10);
       $out .= "-----------------------------------".chr(10);
     }
 
-    $date_formatted = date('d M', strtotime($user->date));
-    $date_birth = new DateTime($user->date);
+    $date_formatted = date('d M', strtotime($bday->date));
+    $date_birth = new DateTime($bday->date);
     $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
     $date_diff = $date_now->diff($date_birth);
     $years_full = $date_diff->y;
-    if (strtotime($user->bday) >= strtotime(date('2020-m-d')) ||
-      date('m') != date('m', strtotime($user->bday)))
+    if (strtotime($bday->bday) >= strtotime(date('2020-m-d')) ||
+      date('m') != date('m', strtotime($bday->bday)))
     {
       $years_full++;
     }
 
-    $out .= $date_formatted.' - '.$user->name.' ('.$years_full.' yo.)'.chr(10);
+    $out .= $date_formatted.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
 
-    $cur_month = $user_month;
+    $cur_month = $bday_month;
   }
 
   return $out;
@@ -71,18 +79,30 @@ function process_message($message)
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  $isAuth = isAuth($user_id);
-  
   if (isset($message['text']))
   {
-    if (!isAuth)
+    $text = $message['text'];
+    $is_auth = false;
+
+    if ($text === '/allgroups')
     {
-      send_message('Sorry, you are not authorized', $chat_id);
+      if (get_is_admin($user_id))
+      {
+        $is_auth = true;
+        send_message('Groupy-groups', $chat_id);
+      }
     }
     else
     {
-      send_message(getBDays(), $chat_id);
+      if (get_is_user($user_id))
+      {
+        $is_auth = true;
+        send_message(get_bdays_formatted(), $chat_id);
+      }
     }
+
+    if (!$is_auth)
+      send_message('Sorry, you are not authorized', $chat_id);
   }
 
   log_message($message, $isAuth);
