@@ -83,7 +83,7 @@ function processMessage($message)
     }
   }
 
-  logMessage($message, $isAuth);
+  log_message($message, $isAuth);
 }
 
 
