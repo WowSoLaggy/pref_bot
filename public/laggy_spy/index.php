@@ -13,7 +13,7 @@ function get_is_auth(string $user_id)
 }
 
 
-function processMessage($message)
+function processMessage(array $message)
 {
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];

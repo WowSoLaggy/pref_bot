@@ -9,7 +9,7 @@ function log_text(string $text, string $dir_path)
   file_put_contents($dir_path.'/log_'.date("Y_m_d").'.log', $text.PHP_EOL, FILE_APPEND);
 }
 
-function log_message_auth(string $message, bool $is_auth, string $dir_path)
+function log_message_auth(array $message, bool $is_auth, string $dir_path)
 {
   $user_id = $message['from']['id'];
   $user_name = $message['from']['username'];
