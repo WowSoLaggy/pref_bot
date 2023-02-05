@@ -12,7 +12,7 @@ function log_text(string $text)
 function log_message(array $message, bool $is_auth)
 {
   $user_id = $message['from']['id'];
-  $chat_id = $callback['chat']['id'];
+  $chat_id = $message['chat']['id'];
   $user_name = $message['from']['username'];
   $is_bot = $message['from']['is_bot'];
   $has_text = isset($message['text']);
