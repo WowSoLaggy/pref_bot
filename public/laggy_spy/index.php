@@ -41,6 +41,7 @@ function process(string $user_id, string $chat_id, string $text = null)
 
 function process_callback(array $callback)
 {
+  process_message($callback['message']);
 }
 
 
