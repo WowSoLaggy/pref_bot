@@ -3,6 +3,16 @@
 
 function create_keyboard(array $pairs)
 {
+  $keyboard = [
+    'inline_keyboard' => [
+        [
+            ['text' => 'forward me to groups', 'callback_data' => 'someString']
+        ]
+    ]
+  ];
+  $encodedKeyboard = json_encode($keyboard);
+  return $encodedKeyboard;
+
   $inline_keyboard = array();
 
   foreach ($pairs as $key => $value)
