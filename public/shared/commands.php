@@ -9,9 +9,18 @@ function get_url()
   return $url;
 }
 
-function send_message(string $text, string $chat_id)
+
+function send_message(string $text, string $chat_id, string $json_keyboard = null)
 {
-  api_request(get_url(), "sendMessage", array('chat_id' => $chat_id, "text" => $text));
+  $parameters = array(
+    'chat_id' => $chat_id,
+    'text' => $text
+  );
+  
+  if (!is_null($json_keyboard))
+    $parameters['reply_markup'] = $json_keyboard;
+
+  api_request(get_url(), "sendMessage", $parameters);
 }
 
 
