@@ -15,6 +15,9 @@ function create_keyboard(array $pairs)
 
   $keyboard = array();
   $keyboard = [ 'inline_keyboard' => $inline_keyboard ];
+
+  $encoded_keyboard = json_encode($keyboard);
+  return $encoded_keyboard;
 }
 
 
