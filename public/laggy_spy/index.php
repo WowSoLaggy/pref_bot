@@ -1,42 +1,15 @@
 <?php
 
+include_once('bdays.php');
 include_once('bot_conf.php');
+include_once('users.php');
 
 include_once('./../shared/commands.php');
 include_once('./../shared/logger.php');
 
 
-function get_is_admin(string $user_id)
-{
-  $green_users = array(
-    305099932, // ae
-  );
-  return in_array($user_id, $green_users);
-}
-
-function get_is_user(string $user_id)
-{
-  $green_users = array(
-    305099932, // ae
-    1092343373, // N
-    1878144297, // degt
-    5236221588, // Nik
-    1857829702, // Slava
-    225599231, // Nemkin
-    322416610, // Vano
-    1753858804, // Kozlov
-    582065565, // Den
-    1166111956, // Goryunov
-    1605467087, // Atyaka
-    246963951, // Ira Nemkina
-  );
-  return in_array($user_id, $green_users);
-}
-
-
 function get_bdays_formatted()
 {
-  include_once('reader.php');
   $bdays = get_bdays();
 
   $out = "";
@@ -79,14 +52,16 @@ function process_message($message)
   $user_id = $message['from']['id'];
   $chat_id = $message['chat']['id'];
 
-  if (isset($message['text']))
+  $user = get_user($user_id);
+  $is_auth = false;
+
+  if (!is_null($user) && isset($message['text']))
   {
     $text = $message['text'];
-    $is_auth = false;
 
     if ($text === '/allgroups')
     {
-      if (get_is_admin($user_id))
+      if ($user->is_admin)
       {
         $is_auth = true;
         send_message('Groupy-groups', $chat_id);
@@ -94,16 +69,13 @@ function process_message($message)
     }
     else
     {
-      if (get_is_user($user_id))
-      {
-        $is_auth = true;
-        send_message(get_bdays_formatted(), $chat_id);
-      }
+      $is_auth = true;
+      send_message(get_bdays_formatted(), $chat_id);
     }
-
-    if (!$is_auth)
-      send_message('Sorry, you are not authorized', $chat_id);
   }
+
+  if (!$is_auth)
+      send_message('Sorry, you are not authorized', $chat_id);
 
   log_message($message, $is_auth);
 }
@@ -125,3 +97,6 @@ if (!$update)
 
 if (isset($update["message"]))
   process_message($update["message"]);
+
+
+?>
