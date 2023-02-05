@@ -9,25 +9,40 @@ include_once('./../shared/keyboard.php');
 include_once('./../shared/logger.php');
 
 
+function get_help()
+{
+  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
+  $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
+  $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
+  $text .= '/all - на весь год';
+
+  return $text;
+}
+
+
 function process(string $user_id, string $chat_id, string $text = null)
 {
   $user = get_user($user_id);
-  $is_auth = false;
+  $is_auth = !is_null($user);
 
   if (!is_null($user) && !is_null($text))
   {
-    if ($text === '/allgroups')
+    if ($text === '/start')
+    {
+      send_message(get_help(), $chat_id);
+    }
+    else if ($text === '/allgroups')
     {
       if ($user->is_admin)
       {
-        $is_auth = true;
         $kb = create_keyboard(array('test_text' => 'test_callback'));
         send_message('Groupy-groups', $chat_id, $kb);
       }
+      else
+        $is_auth = false;
     }
     else
     {
-      $is_auth = true;
       send_message(get_bdays_formatted(), $chat_id);
     }
   }
