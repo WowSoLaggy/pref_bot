@@ -2,44 +2,7 @@
 
 include_once('bday.php');
 
-
-function connect()
-{
-  include('./../../config/secrets.php');
-  
-  if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
-    throw new Exception('Cannot connect to DB: Please check connection settings in "secrets.php" file.');
-  
-  $link = mysqli_connect($dbHost, $dbUser, $dbPass);
-  if (!$link)
-    throw new Exception(mysqli_connect_error());
-
-  mysqli_select_db($link, $dbName) or die('Error: '.mysqli_error($link));
-  mysqli_query($link, "SET NAMES utf8;");
-  
-  return $link;
-}
-
-function disconnect($connection)
-{
-  mysqli_close($connection);
-}
-
-
-// Self-written (honestly copied from web) function
-// that replaces 'mysql_result'
-function mysqli_result($res, $row = 0, $col = 0)
-{ 
-    $numrows = mysqli_num_rows($res); 
-    if ($numrows && $row <= ($numrows - 1) && $row >= 0)
-    {
-        mysqli_data_seek($res, $row);
-        $resrow = (is_numeric($col)) ? mysqli_fetch_row($res) : mysqli_fetch_assoc($res);
-        if (isset($resrow[$col]))
-            return $resrow[$col];
-    }
-    return false;
-}
+include_once('./../shared/mysql.php');
 
 
 function get_bdays_from_db($connection)
@@ -89,5 +52,50 @@ function get_bdays()
 
   return $bdays;
 }
+
+
+function get_bdays_formatted(int $months_to_show)
+{
+  $bdays = get_bdays();
+
+  $out = "";
+  $cur_month = "";
+  $months_shown = 0;
+
+  foreach ($bdays as &$bday)
+  {
+    $bday_month = date('M', strtotime($bday->date));
+    if ($cur_month != $bday_month)
+    {
+      ++$months_shown;
+      if ($months_shown > $months_to_show)
+        break;
+
+      if (!empty($cur_month))
+        $out .= chr(10);
+      
+      $out .= $bday_month.chr(10);
+      $out .= "-----------------------------------".chr(10);
+    }
+
+    $date_formatted = date('d M', strtotime($bday->date));
+    $date_birth = new DateTime($bday->date);
+    $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
+    $date_diff = $date_now->diff($date_birth);
+    $years_full = $date_diff->y;
+    if (strtotime($bday->bday) >= strtotime(date('2020-m-d')) ||
+      date('m') != date('m', strtotime($bday->bday)))
+    {
+      ++$years_full;
+    }
+
+    $out .= $date_formatted.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
+
+    $cur_month = $bday_month;
+  }
+
+  return $out;
+}
+
 
 ?>

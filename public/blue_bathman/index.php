@@ -1,109 +1,82 @@
 <?php
 
+include_once('bdays.php');
 include_once('bot_conf.php');
+include_once('users.php');
 
 include_once('./../shared/commands.php');
+include_once('./../shared/keyboard.php');
 include_once('./../shared/logger.php');
 
 
-function get_is_admin(string $user_id)
+function get_help()
 {
-  $green_users = array(
-    305099932, // ae
-  );
-  return in_array($user_id, $green_users);
-}
+  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
+  $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
+  $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
+  $text .= '/all (или /все) - на весь год';
 
-function get_is_user(string $user_id)
-{
-  $green_users = array(
-    305099932, // ae
-    1092343373, // N
-    1878144297, // degt
-    5236221588, // Nik
-    1857829702, // Slava
-    225599231, // Nemkin
-    322416610, // Vano
-    1753858804, // Kozlov
-    582065565, // Den
-    1166111956, // Goryunov
-    1605467087, // Atyaka
-    246963951, // Ira Nemkina
-  );
-  return in_array($user_id, $green_users);
+  return $text;
 }
 
 
-function get_bdays_formatted()
+function process(string $user_id, string $chat_id, string $text = null)
 {
-  include_once('reader.php');
-  $bdays = get_bdays();
+  $user = get_user($user_id);
+  $is_auth = !is_null($user);
 
-  $out = "";
-  $cur_month = "";
-
-  foreach ($bdays as &$bday)
+  if (!is_null($user) && !is_null($text))
   {
-    $bday_month = date('M', strtotime($bday->date));
-    if ($cur_month != $bday_month)
+    if ($text === '/start' || $text === '/help')
     {
-      if (!empty($cur_month))
-        $out .= chr(10);
-      
-      $out .= $bday_month.chr(10);
-      $out .= "-----------------------------------".chr(10);
+      send_message(get_help(), $chat_id);
     }
-
-    $date_formatted = date('d M', strtotime($bday->date));
-    $date_birth = new DateTime($bday->date);
-    $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
-    $date_diff = $date_now->diff($date_birth);
-    $years_full = $date_diff->y;
-    if (strtotime($bday->bday) >= strtotime(date('2020-m-d')) ||
-      date('m') != date('m', strtotime($bday->bday)))
+    else if ($text === '/allgroups')
     {
-      $years_full++;
-    }
-
-    $out .= $date_formatted.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
-
-    $cur_month = $bday_month;
-  }
-
-  return $out;
-}
-
-
-function process_message($message)
-{
-  $user_id = $message['from']['id'];
-  $chat_id = $message['chat']['id'];
-
-  if (isset($message['text']))
-  {
-    $text = $message['text'];
-    $is_auth = false;
-
-    if ($text === '/allgroups')
-    {
-      if (get_is_admin($user_id))
+      if ($user->is_admin)
       {
-        $is_auth = true;
-        send_message('Groupy-groups', $chat_id);
+        $kb = create_keyboard(array('test_text' => 'test_callback'));
+        send_message('Groupy-groups', $chat_id, $kb);
       }
+      else
+        $is_auth = false;
+    }
+    else if ($text === '/all' || $text === '/все')
+    {
+      send_message(get_bdays_formatted(12), $chat_id);
     }
     else
     {
-      if (get_is_user($user_id))
-      {
-        $is_auth = true;
-        send_message(get_bdays_formatted(), $chat_id);
-      }
+      send_message(get_bdays_formatted(2), $chat_id);
     }
-
-    if (!$is_auth)
-      send_message('Sorry, you are not authorized', $chat_id);
   }
+
+  if (!$is_auth)
+      send_message('Sorry, you are not authorized', $chat_id);
+
+  return $is_auth;
+}
+
+
+function process_callback(array $callback)
+{
+  $user_id = $callback['from']['id'];
+  $chat_id = $callback['message']['chat']['id'];
+  $text = isset($callback['data']) ? $callback['data'] : null;
+
+  $is_auth = process($user_id, $chat_id, $text);
+
+  log_callback($callback, $is_auth);
+}
+
+
+function process_message(array $message)
+{
+  $user_id = $message['from']['id'];
+  $chat_id = $message['chat']['id'];
+  $text = isset($message['text']) ? $message['text'] : null;
+
+  $is_auth = process($user_id, $chat_id, $text);
 
   log_message($message, $is_auth);
 }
@@ -123,5 +96,10 @@ if (!$update)
   exit;
 }
 
-if (isset($update["message"]))
-  process_message($update["message"]);
+if (isset($update['callback_query']))
+  process_callback($update['callback_query']);
+else if (isset($update['message']))
+  process_message($update['message']);
+
+
+?>
