@@ -28,7 +28,7 @@ function get_user_from_db($connection, string $user_id)
 function get_user(string $user_id)
 {
   $connection = connect();
-  $user = get_user_from_db($connection);
+  $user = get_user_from_db($connection, $user_id);
   disconnect($connection);
 
   return $user;
