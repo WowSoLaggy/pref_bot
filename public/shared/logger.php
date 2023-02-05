@@ -28,4 +28,9 @@ function log_message(array $message, bool $is_auth)
   log_text($log);
 }
 
+function log_callback(array $callback)
+{
+  log_text(json_encode($callback));
+}
+
 ?>

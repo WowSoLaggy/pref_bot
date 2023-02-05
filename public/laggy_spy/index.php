@@ -45,7 +45,9 @@ function process_callback(array $callback)
   $chat_id = $callback['chat_instance'];
   $text = isset($callback['data']) ? $callback['data'] : null;
 
-  $is_auth = process($user_id, $chat_id, $text);
+  //$is_auth = process($user_id, $chat_id, $text);
+
+  log_callback($callback);
 }
 
 
