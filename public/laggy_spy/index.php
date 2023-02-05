@@ -5,6 +5,7 @@ include_once('bot_conf.php');
 include_once('users.php');
 
 include_once('./../shared/commands.php');
+include_once('./../shared/keyboard.php');
 include_once('./../shared/logger.php');
 
 
@@ -64,7 +65,8 @@ function process_message($message)
       if ($user->is_admin)
       {
         $is_auth = true;
-        send_message('Groupy-groups', $chat_id);
+        $kb = create_keyboard(array('test_text' => 'test_callback'));
+        send_message('Groupy-groups', $chat_id, $kb);
       }
     }
     else
