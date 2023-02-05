@@ -29,13 +29,13 @@ function log_message(array $message, bool $is_auth)
   log_text($log);
 }
 
-function log_callback(array $callback)
+function log_callback(array $callback, bool $is_auth)
 {
   $user_id = $callback['from']['id'];
-  $chat_id = $callback['chat']['id'];
+  $chat_id = $callback['message']['chat']['id'];
   $user_name = $callback['from']['username'];
   $is_bot = $callback['from']['is_bot'];
-  $has_text = isset($callback['text']);
+  $has_text = isset($callback['data']);
 
   $log = date('Y.m.d H:i:s').' ';
 
@@ -44,7 +44,7 @@ function log_callback(array $callback)
   $log .= '- ';
   $log .= $is_auth ? 'GRANT' : 'DENY';
   $log .= ' - ';
-  $log .= $has_text ? $callback['text'] : 'NO TEXT';
+  $log .= $has_text ? $callback['data'] : 'NO TEXT';
 
   log_text($log);
 }

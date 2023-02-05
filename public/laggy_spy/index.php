@@ -42,12 +42,12 @@ function process(string $user_id, string $chat_id, string $text = null)
 function process_callback(array $callback)
 {
   $user_id = $callback['from']['id'];
-  $chat_id = $callback['chat']['id'];
-  $text = isset($callback['text']) ? $callback['text'] : null;
+  $chat_id = $callback['message']['chat']['id'];
+  $text = isset($callback['data']) ? $callback['data'] : null;
 
-  //$is_auth = process($user_id, $chat_id, $text);
+  $is_auth = process($user_id, $chat_id, $text);
 
-  log_callback($callback);
+  log_callback($callback, $is_auth);
 }
 
 
