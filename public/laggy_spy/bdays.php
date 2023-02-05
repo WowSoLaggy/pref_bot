@@ -53,4 +53,44 @@ function get_bdays()
   return $bdays;
 }
 
+
+function get_bdays_formatted()
+{
+  $bdays = get_bdays();
+
+  $out = "";
+  $cur_month = "";
+
+  foreach ($bdays as &$bday)
+  {
+    $bday_month = date('M', strtotime($bday->date));
+    if ($cur_month != $bday_month)
+    {
+      if (!empty($cur_month))
+        $out .= chr(10);
+      
+      $out .= $bday_month.chr(10);
+      $out .= "-----------------------------------".chr(10);
+    }
+
+    $date_formatted = date('d M', strtotime($bday->date));
+    $date_birth = new DateTime($bday->date);
+    $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
+    $date_diff = $date_now->diff($date_birth);
+    $years_full = $date_diff->y;
+    if (strtotime($bday->bday) >= strtotime(date('2020-m-d')) ||
+      date('m') != date('m', strtotime($bday->bday)))
+    {
+      $years_full++;
+    }
+
+    $out .= $date_formatted.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
+
+    $cur_month = $bday_month;
+  }
+
+  return $out;
+}
+
+
 ?>
