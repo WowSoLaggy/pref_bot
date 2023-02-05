@@ -14,7 +14,7 @@ function get_help()
   $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
   $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
   $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
-  $text .= '/all - на весь год';
+  $text .= '/all (или /все) - на весь год';
 
   return $text;
 }
@@ -27,7 +27,7 @@ function process(string $user_id, string $chat_id, string $text = null)
 
   if (!is_null($user) && !is_null($text))
   {
-    if ($text === '/start')
+    if ($text === '/start' || $text === '/help')
     {
       send_message(get_help(), $chat_id);
     }
@@ -41,9 +41,13 @@ function process(string $user_id, string $chat_id, string $text = null)
       else
         $is_auth = false;
     }
+    else if ($text === '/all' || $text === '/все')
+    {
+      send_message(get_bdays_formatted(12), $chat_id);
+    }
     else
     {
-      send_message(get_bdays_formatted(), $chat_id);
+      send_message(get_bdays_formatted(2), $chat_id);
     }
   }
 

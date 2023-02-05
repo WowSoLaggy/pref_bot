@@ -54,18 +54,23 @@ function get_bdays()
 }
 
 
-function get_bdays_formatted()
+function get_bdays_formatted(int $months_to_show)
 {
   $bdays = get_bdays();
 
   $out = "";
   $cur_month = "";
+  $months_shown = 0;
 
   foreach ($bdays as &$bday)
   {
     $bday_month = date('M', strtotime($bday->date));
     if ($cur_month != $bday_month)
     {
+      ++$months_shown;
+      if ($months_shown > $months_to_show)
+        break;
+
       if (!empty($cur_month))
         $out .= chr(10);
       
@@ -81,7 +86,7 @@ function get_bdays_formatted()
     if (strtotime($bday->bday) >= strtotime(date('2020-m-d')) ||
       date('m') != date('m', strtotime($bday->bday)))
     {
-      $years_full++;
+      ++$years_full;
     }
 
     $out .= $date_formatted.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
