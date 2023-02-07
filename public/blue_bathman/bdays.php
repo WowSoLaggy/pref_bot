@@ -1,8 +1,15 @@
 <?php
 
-require_once __DIR__.'/bday.php';
-
 require_once __DIR__.'/../shared/mysql.php';
+
+
+class BDay
+{
+  public $id = 0;
+  public $name = "";
+  public $date = '2000-1-1';
+  public $bday = '1-1';
+}
 
 
 function get_bdays_from_db($connection)
