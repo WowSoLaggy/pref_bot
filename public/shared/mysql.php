@@ -6,7 +6,7 @@ function connect()
   require_once './../../config/secrets.php';
   
   if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
-    throw new Exception('Cannot connect to DB: Please check connection settings in "secrets.php" file.');
+    throw new Exception('No DB connection settings: Please check "secrets.php" file.');
   
   $link = mysqli_connect($dbHost, $dbUser, $dbPass);
   if (!$link)
