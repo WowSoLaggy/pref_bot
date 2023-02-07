@@ -16,7 +16,7 @@ function get_bdays_from_db($connection)
 {
   $bdays = array();
   
-  $result = mysqli_query($connection, "SELECT id, name, date FROM bdays_tbl");
+  $result = mysqli_query($connection, "SELECT id, name, date FROM bdays_tbl WHERE NOT fake");
   $num_bdays = mysqli_num_rows($result);
   for ($i = 0; $i < $num_bdays; $i++)
   {
