@@ -1,9 +1,9 @@
 <?php
 
-require_once 'bot_conf.php';
-require_once 'users.php';
+require_once __DIR__.'/bot_conf.php';
+require_once __DIR__.'/users.php';
 
-require_once './../public/shared/commands.php';
+require_once __DIR__.'/../public/shared/commands.php';
 
 
 $users = get_users();

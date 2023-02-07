@@ -1,8 +1,8 @@
 <?php
 
-require_once 'user.php';
+require_once __DIR__.'/user.php';
 
-require_once './../shared/mysql.php';
+require_once __DIR__.'/../shared/mysql.php';
 
 
 function get_user_from_db($connection, string $user_id)

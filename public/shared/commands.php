@@ -1,6 +1,6 @@
 <?php
 
-require_once 'tg_api.php';
+require_once __DIR__.'/tg_api.php';
 
 
 function get_url()

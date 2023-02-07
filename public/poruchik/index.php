@@ -1,6 +1,6 @@
 <?php
 
-require_once './../../config/tokens.php';
+require_once __DIR__.'/../../config/tokens.php';
 
 define('API_URL', 'https://api.telegram.org/bot'.TOKEN_PORUCHIK.'/');
 

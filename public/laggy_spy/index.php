@@ -1,12 +1,12 @@
 <?php
 
-require_once 'bdays.php';
-require_once 'bot_conf.php';
-require_once 'users.php';
+require_once __DIR__.'/bdays.php';
+require_once __DIR__.'/bot_conf.php';
+require_once __DIR__.'/users.php';
 
-require_once './../shared/commands.php';
-require_once './../shared/keyboard.php';
-require_once './../shared/logger.php';
+require_once __DIR__.'/../shared/commands.php';
+require_once __DIR__.'/../shared/keyboard.php';
+require_once __DIR__.'/../shared/logger.php';
 
 
 function get_help()

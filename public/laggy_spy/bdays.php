@@ -1,8 +1,8 @@
 <?php
 
-require_once 'bday.php';
+require_once __DIR__.'/bday.php';
 
-require_once './../shared/mysql.php';
+require_once __DIR__.'/../shared/mysql.php';
 
 
 function get_bdays_from_db($connection)

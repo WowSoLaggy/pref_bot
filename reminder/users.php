@@ -1,6 +1,6 @@
 <?php
 
-require_once './../public/shared/mysql.php';
+require_once __DIR__.'/../public/shared/mysql.php';
 
 
 class User
