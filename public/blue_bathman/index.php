@@ -1,12 +1,12 @@
 <?php
 
-include_once('bdays.php');
-include_once('bot_conf.php');
-include_once('users.php');
+require_once 'bdays.php';
+require_once 'bot_conf.php';
+require_once 'users.php';
 
-include_once('./../shared/commands.php');
-include_once('./../shared/keyboard.php');
-include_once('./../shared/logger.php');
+require_once './../shared/commands.php';
+require_once './../shared/keyboard.php';
+require_once './../shared/logger.php';
 
 
 function get_help()

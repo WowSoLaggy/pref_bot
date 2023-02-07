@@ -1,8 +1,8 @@
 <?php
 
-include_once('user.php');
+require_once 'user.php';
 
-include_once('./../shared/mysql.php');
+require_once './../shared/mysql.php';
 
 
 function get_user_from_db($connection, string $user_id)

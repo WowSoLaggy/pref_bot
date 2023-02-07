@@ -1,6 +1,6 @@
 <?php
 
-include_once('tg_api.php');
+require_once 'tg_api.php';
 
 
 function get_url()

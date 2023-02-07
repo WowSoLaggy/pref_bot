@@ -3,7 +3,7 @@
 
 function connect()
 {
-  include('./../../config/secrets.php');
+  require_once './../../config/secrets.php';
   
   if (!isset($dbHost) || !isset($dbName) || !isset($dbUser) || !isset($dbPass))
     throw new Exception('Cannot connect to DB: Please check connection settings in "secrets.php" file.');
