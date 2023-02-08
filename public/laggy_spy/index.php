@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/bdays.php';
 require_once __DIR__.'/bot_conf.php';
+require_once __DIR__.'/d01.php';
 require_once __DIR__.'/users.php';
 
 require_once __DIR__.'/../shared/commands.php';
@@ -44,6 +45,32 @@ function process(string $user_id, string $chat_id, string $text = null)
     else if ($text === '/all' || $text === '/все')
     {
       send_message(get_bdays_formatted(12), $chat_id);
+    }
+    else if ($text === '/d0')
+    {
+      if ($user->is_admin)
+      {
+        $new_d0 = !is_d01($user_id, 'd0');
+        switch_d01($user_id, 'd0', $new_d0);
+        
+        $text = 'd0 is now '.($new_d0 ? 'ON' : 'OFF');
+        send_message($text, $chat_id);
+      }
+      else
+        $is_auth = false;
+    }
+    else if ($text === '/d1')
+    {
+      if ($user->is_admin)
+      {
+        $new_d1 = !is_d01($user_id, 'd1');
+        switch_d01($user_id, 'd1', $new_d1);
+        
+        $text = 'd1 is now '.($new_d1 ? 'ON' : 'OFF');
+        send_message($text, $chat_id);
+      }
+      else
+        $is_auth = false;
     }
     else
     {
