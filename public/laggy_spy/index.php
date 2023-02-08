@@ -53,7 +53,9 @@ function process(string $user_id, string $chat_id, string $text = null)
         $new_d0 = !is_d01($user_id, 'd0');
         switch_d01($user_id, 'd0', $new_d0);
         
-        $text = 'd0 is now '.($new_d0 ? 'ON' : 'OFF');
+        $text = $new_d0 ?
+          'Ура! Теперь каждый день примерно в полночь (по Мск) я буду предупреждать тебя о наступивших днях рождения! Это ведь отличная идея присылать сообщения в полночь!' :
+          'Уговорил, больше не буду предупреждать о наступивших днях рождения...';
         send_message($text, $chat_id);
       }
       else
@@ -66,7 +68,9 @@ function process(string $user_id, string $chat_id, string $text = null)
         $new_d1 = !is_d01($user_id, 'd1');
         switch_d01($user_id, 'd1', $new_d1);
         
-        $text = 'd1 is now '.($new_d1 ? 'ON' : 'OFF');
+        $text = $new_d1 ?
+          'Спасибо! Теперь я буду предупреждать тебя о предстоящих днях рождения примерно за сутки!' :
+          'Лааааадно, больше не буду предупреждать за сутки...';
         send_message($text, $chat_id);
       }
       else
