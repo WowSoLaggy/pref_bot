@@ -1,8 +1,12 @@
 <?php
 
-require_once __DIR__.'/user.php';
-
 require_once __DIR__.'/../shared/mysql.php';
+
+
+class User
+{
+  public $is_admin = false;
+}
 
 
 function get_user_from_db($connection, string $user_id)
