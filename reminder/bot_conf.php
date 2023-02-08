@@ -2,5 +2,5 @@
 
 require_once __DIR__.'/../config/tokens.php';
 
-define('DIR_PATH', '/var/log/laggy_spy_bot');
-define('BOT_TOKEN', TOKEN_LAGGY_SPY);
+define('DIR_PATH', '/var/log/blue_bathman_bot');
+define('BOT_TOKEN', TOKEN_BLUE_BATHMAN);
