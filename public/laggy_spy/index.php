@@ -76,6 +76,13 @@ function process(string $user_id, string $chat_id, string $text = null)
       else
         $is_auth = false;
     }
+    else if ($text === '/rem')
+    {
+      if ($user->is_admin)
+      {
+        exec('php -f '.__DIR__.'/../../reminder/reminder.php');
+      }
+    }
     else
     {
       send_message(get_bdays_formatted(2), $chat_id);
