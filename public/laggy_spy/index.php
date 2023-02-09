@@ -37,6 +37,7 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
 
     $func = $cmd->func;
     $func($user_id, $chat_id);
+    break;
   }
 
   return true;
