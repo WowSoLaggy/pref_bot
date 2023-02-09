@@ -35,7 +35,8 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
       return false;
     }
 
-    $cmd->func($user_id, $chat_id);
+    $func = $cmd->func;
+    $func($user_id, $chat_id);
   }
 
   return true;

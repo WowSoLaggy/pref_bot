@@ -69,6 +69,13 @@ function cmd_default($user_id, $chat_id)
 
 class BotCommand
 {
+  function __construct($command, $func, $admin)
+  {
+    $this->command = $command;
+    $this->func = $func;
+    $this->admin = $admin;
+  }
+
   public $command = '';
   public $func = 'cmd_fake';
   public $admin = false;
