@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/bdays.php';
+require_once __DIR__.'/bot_commands.php';
 require_once __DIR__.'/bot_conf.php';
 require_once __DIR__.'/d01.php';
 require_once __DIR__.'/users.php';
@@ -10,89 +11,34 @@ require_once __DIR__.'/../shared/keyboard.php';
 require_once __DIR__.'/../shared/logger.php';
 
 
-function get_help()
+function process(string $user_id, string $chat_id, string $text = null) : bool
 {
-  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
-  $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
-  $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
-  $text .= '/all (или /все) - на весь год';
+  $auth_error_msg = 'Sorry, you are not authorized';
 
-  return $text;
-}
-
-
-function process(string $user_id, string $chat_id, string $text = null)
-{
   $user = get_user($user_id);
-  $is_auth = !is_null($user);
-
-  if (!is_null($user) && !is_null($text))
+  if (is_null($user))
   {
-    if ($text === '/start' || $text === '/help')
-    {
-      send_message(get_help(), $chat_id);
-    }
-    else if ($text === '/allgroups')
-    {
-      if ($user->is_admin)
-      {
-        $kb = create_keyboard(array('test_text' => 'test_callback'));
-        send_message('Groupy-groups', $chat_id, $kb);
-      }
-      else
-        $is_auth = false;
-    }
-    else if ($text === '/all' || $text === '/все')
-    {
-      send_message(get_bdays_formatted(12), $chat_id);
-    }
-    else if ($text === '/d0')
-    {
-      if ($user->is_admin)
-      {
-        $new_d0 = !is_d01($user_id, 'd0');
-        switch_d01($user_id, 'd0', $new_d0);
-        
-        $text = $new_d0 ?
-          'Ура! Теперь каждый день примерно в полночь (по Мск) я буду предупреждать тебя о наступивших днях рождения! Это ведь отличная идея присылать сообщения в полночь!' :
-          'Уговорил, больше не буду предупреждать о наступивших днях рождения...';
-        send_message($text, $chat_id);
-      }
-      else
-        $is_auth = false;
-    }
-    else if ($text === '/d1')
-    {
-      if ($user->is_admin)
-      {
-        $new_d1 = !is_d01($user_id, 'd1');
-        switch_d01($user_id, 'd1', $new_d1);
-        
-        $text = $new_d1 ?
-          'Спасибо! Теперь я буду предупреждать тебя о предстоящих днях рождения примерно за сутки!' :
-          'Лааааадно, больше не буду предупреждать за сутки...';
-        send_message($text, $chat_id);
-      }
-      else
-        $is_auth = false;
-    }
-    else if ($text === '/rem')
-    {
-      if ($user->is_admin)
-      {
-        exec('php -f '.__DIR__.'/../../reminder/reminder.php');
-      }
-    }
-    else
-    {
-      send_message(get_bdays_formatted(2), $chat_id);
-    }
+    send_message($auth_error_msg, $chat_id);
+    return false;
   }
 
-  if (!$is_auth)
-      send_message('Sorry, you are not authorized', $chat_id);
+  $cmds = get_commands();
+  foreach ($cmds as &$cmd)
+  {
+    if ($cmd->command !== $text && !empty($cmd->command))
+      continue;
+    
+    $granted = $user->is_admin || !$cmd->admin;
+    if (!$granted)
+    {
+      send_message($auth_error_msg, $chat_id);
+      return false;
+    }
 
-  return $is_auth;
+    $cmd->func($user_id, $chat_id);
+  }
+
+  return true;
 }
 
 
