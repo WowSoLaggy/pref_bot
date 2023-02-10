@@ -81,14 +81,18 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d0))
   {
-    $out[0] = 'Today: ';
+    $date_formatted = date('d M', strtotime($bdays[0]->date));
+
+    $out[0] = $date_formatted.': ';
     foreach ($bdays_d0 as &$bday)
       $out[0] .= $bday->name.' ';
   }
 
   if (!empty($bdays_d1))
   {
-    $out[1] = 'Soon: ';
+    $date_formatted = date('d M', strtotime($bdays[0]->date));
+
+    $out[1] = $date_formatted.': ';
     foreach ($bdays_d1 as &$bday)
       $out[1] .= $bday->name.' ';
   }
