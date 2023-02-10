@@ -68,6 +68,17 @@ function get_bdays_d1(array $bdays) : array
 }
 
 
+function get_full_years(BDay $bday) : int
+{
+  $date_birth = new DateTime($bday->date);
+  $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
+  $date_diff = $date_now->diff($date_birth);
+  $years_full = $date_diff->y;
+
+  return $years_full;
+}
+
+
 function get_bdays_formatted() : array
 {
   $connection = connect();
@@ -83,18 +94,24 @@ function get_bdays_formatted() : array
   {
     $date_formatted = date('d M', strtotime($bdays_d0[0]->date));
 
-    $out[0] = $date_formatted.': ';
+    $out[0] = $date_formatted.' наступает ДР у:'.chr(10);
     foreach ($bdays_d0 as &$bday)
-      $out[0] .= $bday->name.' ';
+    {
+      $years_full = get_full_years($bday);
+      $out[0] .= $bday->name.' ('.$years_full.' yo.)'.chr(10);
+    }
   }
 
   if (!empty($bdays_d1))
   {
     $date_formatted = date('d M', strtotime($bdays_d1[0]->date));
 
-    $out[1] = $date_formatted.': ';
+    $out[1] = $date_formatted.' наступает ДР у:'.chr(10);
     foreach ($bdays_d1 as &$bday)
-      $out[1] .= $bday->name.' ';
+    {
+      $years_full = get_full_years($bday);
+      $out[1] .= $bday->name.' ('.$years_full.' yo.)'.chr(10);
+    }
   }
 
   return $out;
