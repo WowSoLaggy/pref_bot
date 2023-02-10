@@ -42,7 +42,7 @@ function get_bdays_d0(array $bdays) : array
 
   foreach ($bdays as &$bday)
   {
-    $dm_now = date('d.m');
+    $dm_now = date('d.m', strtotime('+1 day'));
     $dm_bday = date('d.m', strtotime($bday->bday));
     if ($dm_now == $dm_bday)
       array_push($bdays_d0, $bday);
@@ -58,7 +58,7 @@ function get_bdays_d1(array $bdays) : array
 
   foreach ($bdays as &$bday)
   {
-    $dm_now = date('d.m', strtotime('+1 day'));
+    $dm_now = date('d.m', strtotime('+2 day'));
     $dm_bday = date('d.m', strtotime($bday->bday));
     if ($dm_now == $dm_bday)
       array_push($bdays_d1, $bday);
