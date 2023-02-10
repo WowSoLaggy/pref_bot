@@ -81,7 +81,7 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d0))
   {
-    $date_formatted = date('d M', strtotime($bdays[0]->date));
+    $date_formatted = date('d M', strtotime($bdays_d0[0]->date));
 
     $out[0] = $date_formatted.': ';
     foreach ($bdays_d0 as &$bday)
@@ -90,7 +90,7 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d1))
   {
-    $date_formatted = date('d M', strtotime($bdays[0]->date));
+    $date_formatted = date('d M', strtotime($bdays_d1[0]->date));
 
     $out[1] = $date_formatted.': ';
     foreach ($bdays_d1 as &$bday)
