@@ -93,11 +93,10 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d0))
   {
-    $day_formatted = date('d M', strtotime($bdays_d0[0]->date));
-    $month_formatted = date('d M', strtotime($bdays_d0[0]->date));
-    $month_ru = translate_month_en2ru($month_formatted);
+    $date_formatted = date('d M', strtotime($bdays_d0[0]->date));
+    $date_ru = translate_month_en2ru($date_formatted);
 
-    $out[0] = $day_formatted.' '.$month_ru.' наступает ДР у:'.chr(10);
+    $out[0] = $date_ru.' наступает ДР у:'.chr(10);
     foreach ($bdays_d0 as &$bday)
     {
       $years_full = get_full_years($bday);
@@ -107,11 +106,10 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d1))
   {
-    $day_formatted = date('d M', strtotime($bdays_d1[0]->date));
-    $month_formatted = date('d M', strtotime($bdays_d1[0]->date));
-    $month_ru = translate_month_en2ru($month_formatted);
+    $date_formatted = date('d M', strtotime($bdays_d1[0]->date));
+    $date_ru = translate_month_en2ru($date_formatted);
 
-    $out[1] = $day_formatted.' '.$month_ru.' наступает ДР у:'.chr(10);
+    $out[1] = $date_ru.' наступает ДР у:'.chr(10);
     foreach ($bdays_d1 as &$bday)
     {
       $years_full = get_full_years($bday);

@@ -82,13 +82,12 @@ function get_bdays_formatted(int $months_to_show)
       if (!empty($cur_month))
         $out .= chr(10);
       
-      $out .= $bday_month.chr(10);
+      $out .= translate_month_en2ru($bday_month).chr(10);
       $out .= "-----------------------------------".chr(10);
     }
 
-    $day_formatted = date('d', strtotime($bday->date));
-    $month_formatted = date('M', strtotime($bday->date));
-    $month_ru = translate_month_en2ru($month_formatted);
+    $date_formatted = date('d M', strtotime($bday->date));
+    $date_ru = translate_month_en2ru($date_formatted);
     $date_birth = new DateTime($bday->date);
     $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
     $date_diff = $date_now->diff($date_birth);
@@ -99,7 +98,7 @@ function get_bdays_formatted(int $months_to_show)
       ++$years_full;
     }
 
-    $out .= $day_formatted.' '.$month_ru.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
+    $out .= $date_ru.' - '.$bday->name.' ('.$years_full.' yo.)'.chr(10);
 
     $cur_month = $bday_month;
   }
