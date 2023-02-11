@@ -1,7 +1,9 @@
 <?php
 
 require_once __DIR__.'/bdays.php';
+require_once __DIR__.'/bot_commands.php';
 require_once __DIR__.'/bot_conf.php';
+require_once __DIR__.'/d01.php';
 require_once __DIR__.'/users.php';
 
 require_once __DIR__.'/../shared/commands.php';
@@ -9,52 +11,36 @@ require_once __DIR__.'/../shared/keyboard.php';
 require_once __DIR__.'/../shared/logger.php';
 
 
-function get_help()
+function process(string $user_id, string $chat_id, string $text = null) : bool
 {
-  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
-  $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
-  $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
-  $text .= '/all (или /все) - на весь год';
+  $auth_error_msg = 'Sorry, you are not authorized';
 
-  return $text;
-}
-
-
-function process(string $user_id, string $chat_id, string $text = null)
-{
   $user = get_user($user_id);
-  $is_auth = !is_null($user);
-
-  if (!is_null($user) && !is_null($text))
+  if (is_null($user))
   {
-    if ($text === '/start' || $text === '/help')
-    {
-      send_message(get_help(), $chat_id);
-    }
-    else if ($text === '/allgroups')
-    {
-      if ($user->is_admin)
-      {
-        $kb = create_keyboard(array('test_text' => 'test_callback'));
-        send_message('Groupy-groups', $chat_id, $kb);
-      }
-      else
-        $is_auth = false;
-    }
-    else if ($text === '/all' || $text === '/все')
-    {
-      send_message(get_bdays_formatted(12), $chat_id);
-    }
-    else
-    {
-      send_message(get_bdays_formatted(2), $chat_id);
-    }
+    send_message($auth_error_msg, $chat_id);
+    return false;
   }
 
-  if (!$is_auth)
-      send_message('Sorry, you are not authorized', $chat_id);
+  $cmds = get_commands();
+  foreach ($cmds as &$cmd)
+  {
+    if ($cmd->command !== $text && !empty($cmd->command))
+      continue;
+    
+    $granted = $user->is_admin || !$cmd->admin;
+    if (!$granted)
+    {
+      send_message($auth_error_msg, $chat_id);
+      return false;
+    }
 
-  return $is_auth;
+    $func = $cmd->func;
+    $func($user_id, $chat_id);
+    break;
+  }
+
+  return true;
 }
 
 
