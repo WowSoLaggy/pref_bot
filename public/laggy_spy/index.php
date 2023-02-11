@@ -26,7 +26,7 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
   if (empty($tokens))
     return true;
 
-  $input_cmd = $tolens[0];
+  $input_cmd = $tokens[0];
 
   $cmds = get_commands();
   foreach ($cmds as &$cmd)
