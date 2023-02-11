@@ -9,6 +9,7 @@ require_once __DIR__.'/users.php';
 require_once __DIR__.'/../shared/commands.php';
 require_once __DIR__.'/../shared/keyboard.php';
 require_once __DIR__.'/../shared/logger.php';
+require_once __DIR__.'/../shared/utils.php';
 
 
 function process(string $user_id, string $chat_id, string $text = null) : bool
@@ -25,7 +26,7 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
   $cmds = get_commands();
   foreach ($cmds as &$cmd)
   {
-    if ($cmd->command !== $text && !empty($cmd->command))
+    if (!starts_with($text, $cmd->command) && !empty($cmd->command))
       continue;
     
     $granted = $user->is_admin || !$cmd->admin;
