@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/../public/shared/mysql.php';
+require_once __DIR__.'/../public/shared/translate.php';
 
 
 class BDay
@@ -92,9 +93,11 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d0))
   {
-    $date_formatted = date('d M', strtotime($bdays_d0[0]->date));
+    $day_formatted = date('d M', strtotime($bdays_d0[0]->date));
+    $month_formatted = date('d M', strtotime($bdays_d0[0]->date));
+    $month_ru = translate_month_en2ru($month_formatted);
 
-    $out[0] = $date_formatted.' наступает ДР у:'.chr(10);
+    $out[0] = $day_formatted.' '.$month_ru.' наступает ДР у:'.chr(10);
     foreach ($bdays_d0 as &$bday)
     {
       $years_full = get_full_years($bday);
@@ -104,9 +107,11 @@ function get_bdays_formatted() : array
 
   if (!empty($bdays_d1))
   {
-    $date_formatted = date('d M', strtotime($bdays_d1[0]->date));
+    $day_formatted = date('d M', strtotime($bdays_d1[0]->date));
+    $month_formatted = date('d M', strtotime($bdays_d1[0]->date));
+    $month_ru = translate_month_en2ru($month_formatted);
 
-    $out[1] = $date_formatted.' наступает ДР у:'.chr(10);
+    $out[1] = $day_formatted.' '.$month_ru.' наступает ДР у:'.chr(10);
     foreach ($bdays_d1 as &$bday)
     {
       $years_full = get_full_years($bday);
