@@ -35,8 +35,9 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
       return false;
     }
 
+    $ctx = new CommandCtx($user_id, $chat_id);
     $func = $cmd->func;
-    $func($user_id, $chat_id);
+    $func($ctx);
     break;
   }
 

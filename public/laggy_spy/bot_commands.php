@@ -3,7 +3,20 @@
 require_once __DIR__.'/../shared/commands.php';
 
 
-function cmd_fake($user_id, $chat_id)
+class CommandCtx
+{
+  function __construct($user_id, $chat_id)
+  {
+    $this->user_id = $user_id;
+    $this->chat_id = $chat_id;
+  }
+
+  public string $user_id = "";
+  public string $chat_id = "" ;
+}
+
+
+function cmd_fake(CommandCtx $ctx)
 {
   throw new Exception('Not implemented.');
 }
@@ -18,52 +31,52 @@ function get_help()
   return $text;
 }
 
-function cmd_start($user_id, $chat_id)
+function cmd_start(CommandCtx $ctx)
 {
-  send_message(get_help(), $chat_id);
+  send_message(get_help(), $ctx->chat_id);
 }
 
-function cmd_all_groups($user_id, $chat_id)
+function cmd_all_groups(CommandCtx $ctx)
 {
   $kb = create_keyboard(array('test_text' => 'test_callback'));
-  send_message('Groupy-groups', $chat_id, $kb);
+  send_message('Groupy-groups', $ctx->chat_id, $kb);
 }
 
-function cmd_all($user_id, $chat_id)
+function cmd_all(CommandCtx $ctx)
 {
-  send_message(get_bdays_formatted(12), $chat_id);
+  send_message(get_bdays_formatted(12), $ctx->chat_id);
 }
 
-function cmd_d0($user_id, $chat_id)
+function cmd_d0(CommandCtx $ctx)
 {
-  $new_d0 = !is_d01($user_id, 'd0');
-  switch_d01($user_id, 'd0', $new_d0);
+  $new_d0 = !is_d01($ctx->user_id, 'd0');
+  switch_d01($ctx->user_id, 'd0', $new_d0);
   
   $text = $new_d0 ?
     'Ура! Теперь каждый день примерно вечером я буду предупреждать тебя о наступающих днях рождения!' :
     'Уговорил, больше не буду предупреждать о наступающих днях рождениях...';
-  send_message($text, $chat_id);
+  send_message($text, $ctx->chat_id);
 }
 
-function cmd_d1($user_id, $chat_id)
+function cmd_d1(CommandCtx $ctx)
 {
-  $new_d1 = !is_d01($user_id, 'd1');
-  switch_d01($user_id, 'd1', $new_d1);
+  $new_d1 = !is_d01($ctx->user_id, 'd1');
+  switch_d01($ctx->user_id, 'd1', $new_d1);
   
   $text = $new_d1 ?
     'Спасибо! Теперь я буду предупреждать тебя о предстоящих днях рождения примерно за сутки!' :
     'Лааааадно, больше не буду предупреждать за сутки...';
-  send_message($text, $chat_id);
+  send_message($text, $ctx->chat_id);
 }
 
-function cmd_rem($user_id, $chat_id)
+function cmd_rem(CommandCtx $ctx)
 {
   exec('php -f '.__DIR__.'/../../reminder/reminder.php');
 }
 
-function cmd_default($user_id, $chat_id)
+function cmd_default(CommandCtx $ctx)
 {
-  send_message(get_bdays_formatted(2), $chat_id);
+  send_message(get_bdays_formatted(2), $ctx->chat_id);
 }
 
 
