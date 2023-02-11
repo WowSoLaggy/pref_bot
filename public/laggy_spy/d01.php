@@ -38,7 +38,6 @@ function switch_d01_in_db($connection, string $user_id, string $d01, bool $value
 
   $mysql_value = $value ? 'TRUE' : 'FALSE';
   $query = 'UPDATE users_tbl SET '.$d01.'='.$mysql_value.' WHERE user_id='.$user_id.' LIMIT 1';
-  echo $query.chr(10);
   $result = mysqli_query($connection, $query);
   if (!$result)
     throw new Exception('Failed to update \''.$d01.'\' for user \''.$user_id.'\'.');

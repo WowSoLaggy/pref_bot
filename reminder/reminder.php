@@ -18,7 +18,7 @@ foreach($users as &$user)
     $out .= $texts[0];
   if ($user->d1)
     $out .= chr(10).$texts[1];
-  echo $out;
+  
   if (strlen($out) > 0)
     send_message($out, $user->user_id);
 }
