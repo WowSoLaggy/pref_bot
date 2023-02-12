@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__.'/bdays.php';
+require_once __DIR__.'/groups.php';
+
 require_once __DIR__.'/../shared/commands.php';
 
 
@@ -23,7 +26,7 @@ function cmd_fake(CommandCtx $ctx)
   throw new Exception('Not implemented.');
 }
 
-function get_help()
+function get_help() : string
 {
   $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
   $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
@@ -81,9 +84,36 @@ function cmd_default(CommandCtx $ctx)
   send_message(get_bdays_formatted(2), $ctx->chat_id);
 }
 
+function get_user_add_help() : string
+{
+  $text = 'Чтобы добавить новый ДР:'.chr(10);
+  $text .= '/add <имя> <yyyy-mm-dd>'.chr(10);
+  $text .= 'Например:'.chr(10);
+  $text .= '/add Антон 1988-11-13';
+
+  return $text;
+}
+
 function cmd_add_dbay(CommandCtx $ctx)
 {
-  send_message(count($ctx->tokens), $ctx->chat_id);
+  // /add Anton 1988-11-13
+  if ($ctx->tokens < 3)
+  {
+    send_message(get_user_add_help());
+    return;
+  }
+
+  // Remove command from tokens
+  array_shift($ctx->tokens);
+  
+  // Get date as the last element
+  $date = array_pop($ctx->tokens);
+  // Combine name from all remain elements
+  $name = implode(' ', $ctx->tokens);
+
+  $group = get_or_create_group($ctx->user_id);
+
+  send_message('Name: '.$name.chr(10).'Date: '.$date.chr(10).'Group: '.$group, $ctx->chat_id);
 }
 
 
