@@ -100,7 +100,7 @@ function cmd_add_dbay(CommandCtx $ctx)
   // /add Anton 1988-11-13
   if (count($ctx->tokens) < 3)
   {
-    send_message(get_user_add_help());
+    send_message(get_user_add_help(), $ctx->chat_id);
     return;
   }
 
