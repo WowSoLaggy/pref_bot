@@ -26,7 +26,7 @@ function create_new_group($connection, int $owner, bool $shared, bool $public)
   $query = 'INSERT INTO groups_tbl VALUES (NULL, '.$owner.', '.$shared_mysql.', '.$public_mysql.')';
   $result = mysqli_query($connection, $query);
   if (!$result)
-    throw new Exception('Failed to create a group with owner: \''.$owner.'\'');
+    throw new Exception('Failed to create a group by query: \"'.$query.'\".');
 }
 
 function get_user_group($connection, string $user_ind) : int
