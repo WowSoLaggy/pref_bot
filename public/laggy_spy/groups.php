@@ -31,13 +31,13 @@ function create_new_group($connection, int $owner, bool $shared, bool $public)
 
 function get_user_group($connection, string $user_ind) : int
 {
-  $query = 'SELECT group_id FROM users_tbl WHERE id='.$user_ind.' LIMIT 1';
+  $query = 'SELECT id FROM users_tbl WHERE owner='.$user_ind.' AND shared=FALSE LIMIT 1';
   $result = mysqli_query($connection, $query);
   
   if (mysqli_num_rows($result) == 0)
-    throw new Exception('No user found with id: \''.$user_ind.'\'');
-
-  $user_group = mysqli_result($result, 0, 'group_id');
+    $user_group = -1;
+  else
+    $user_group = mysqli_result($result, 0, 'id');
 
   mysqli_free_result($result);
 
