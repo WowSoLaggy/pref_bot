@@ -83,8 +83,7 @@ function cmd_default(CommandCtx $ctx)
 
 function cmd_add_dbay(CommandCtx $ctx)
 {
-  send_message(' popo', $ctx->chat_id);
-  send_message(' ', $ctx->chat_id);
+  send_message(len($ctx->tokens), $ctx->chat_id);
 }
 
 
