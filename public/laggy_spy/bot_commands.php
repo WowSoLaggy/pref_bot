@@ -98,7 +98,7 @@ function get_user_add_help() : string
 function cmd_add_dbay(CommandCtx $ctx)
 {
   // /add Anton 1988-11-13
-  if ($ctx->tokens < 3)
+  if (count($ctx->tokens) < 3)
   {
     send_message(get_user_add_help());
     return;

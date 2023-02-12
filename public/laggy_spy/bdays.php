@@ -113,7 +113,7 @@ function validate_add_bday_pars(string $name, string $date) : string
     return 'Имя должно содержать только буквы и цифры (А-Я, а-я, A-Z, a-z, 0-9)!'.chr(10).'Попробуй ещё раз, это не сложно';
   
   $tokens = explode('-', $date);
-  if ($tokens != 3)
+  if (count($tokens) != 3)
     return 'Дата должна быть обязательно в формате yyyy-mm-dd, например 13 ноября 1988 года надо записать так:'.chr(10).'1988-11-13'.chr(10).'Попробуй ещё раз, это не сложно';
 
   $year_str = $tokens[0];
