@@ -5,10 +5,11 @@ require_once __DIR__.'/../shared/commands.php';
 
 class CommandCtx
 {
-  function __construct($user_id, $chat_id)
+  function __construct($user_id, $chat_id, $tokens)
   {
     $this->user_id = $user_id;
     $this->chat_id = $chat_id;
+    $this->tokens = $tokens;
   }
 
   public string $user_id = "";
@@ -82,13 +83,7 @@ function cmd_default(CommandCtx $ctx)
 
 function cmd_add_dbay(CommandCtx $ctx)
 {
-  send_message(' popo', $ctx->chat_id);
-  send_message('popo ', $ctx->chat_id);
-  send_message(' ', $ctx->chat_id);
-  send_message('', $ctx->chat_id);
-
-  for ($i = 0; $i < len($ctx->tokens); $i++)
-    send_message($ctx->tokens[i], $ctx->chat_id);
+  
 }
 
 
