@@ -95,7 +95,7 @@ function get_user_add_help() : string
   return $text;
 }
 
-function cmd_add_dbay(CommandCtx $ctx)
+function cmd_add_bday(CommandCtx $ctx)
 {
   // /add Anton 1988-11-13
   if (count($ctx->tokens) < 3)
@@ -151,7 +151,7 @@ function get_commands() : array
   array_push($commands, new BotCommand('/d0', 'cmd_d0', true));
   array_push($commands, new BotCommand('/d1', 'cmd_d1', true));
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
-  array_push($commands, new BotCommand('/add', 'cmd_add_dbay', true));
+  array_push($commands, new BotCommand('/add', 'cmd_add_bday', true));
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;
