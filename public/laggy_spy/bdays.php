@@ -106,10 +106,9 @@ function get_bdays_formatted(int $months_to_show)
   return $out;
 }
 
-
 function validate_add_bday_pars(string $name, string $date) : string
 {
-  if (!preg_match('#^[а-яА-Яa-zA-Z0-9]+$#', $text))
+  if (!preg_match('/^([а-яА-ЯЁёa-zA-Z0-9_]+)$/u', $name))
     return 'Имя должно содержать только буквы и цифры (А-Я, а-я, A-Z, a-z, 0-9)!'.chr(10).'Попробуй ещё раз, это не сложно';
   
   $tokens = explode('-', $date);
@@ -123,9 +122,9 @@ function validate_add_bday_pars(string $name, string $date) : string
   if (!ctype_digit($year_str) || !ctype_digit($month_str) || !ctype_digit($day_str))
     return 'Год, месяц и день рождения могут содержать только цифры! Например 1988-11-13. Попробуй ещё раз, это не сложно';
 
-  $year = int_val($year_str);
-  $month = int_val($month_str);
-  $day = int_val($day_str);
+  $year = intval($year_str);
+  $month = intval($month_str);
+  $day = intval($day_str);
 
   if ($month < 1 || 12 < $month)
     return 'Месяц может быть от 01 (январь) до 12 (декабрь). Попробуй ещё раз, у тебя получится';
@@ -137,12 +136,7 @@ function validate_add_bday_pars(string $name, string $date) : string
   if ($day > $max_days)
     return 'Указанный тобой месяц содержит всего '.$max_days.' дней! Уточни как число...';
 
-  $date_birth = new DateTime($date);
-  $date_now = new DateTime(date('Y-m-d'));
-  $date_diff = $date_now->diff($date_birth);
-  $days_diff = $date_diff->days;
-
-  if ($days_diff > 0)
+  if (strtotime($date) > strtotime('now'))
     return 'День рождения не может быть в будущем! Попробуй ещё раз';
 
   return '';
