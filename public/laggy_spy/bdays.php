@@ -133,7 +133,7 @@ function validate_add_bday_pars(string $name, string $date) : string
   if ($day < 1)
     return 'Число не бывает меньше 1. Попробуй ещё раз, я в тебя верю';
 
-  $max_days = cal_days_in_month(CAL_GREGORIAN, $month, $year)
+  $max_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
   if ($day > $max_days)
     return 'Указанный тобой месяц содержит всего '.$max_days.' дней! Уточни как число...';
 
