@@ -31,7 +31,7 @@ function create_new_group($connection, int $owner, bool $shared, bool $public)
 
 function get_user_group($connection, string $user_ind) : int
 {
-  $query = 'SELECT id FROM users_tbl WHERE owner='.$user_ind.' AND shared=FALSE LIMIT 1';
+  $query = 'SELECT id FROM groups_tbl WHERE owner='.$user_ind.' AND shared=FALSE LIMIT 1';
   $result = mysqli_query($connection, $query);
   
   if (mysqli_num_rows($result) == 0)
