@@ -12,14 +12,18 @@ $users = get_users();
 
 foreach($users as &$user)
 {
-  $out = "";
+  $out = '';
 
-  if ($user->d0)
+  if ($user->d0 && !empty($texts[0]))
     $out .= $texts[0];
-  if ($user->d1)
-    $out .= chr(10).$texts[1];
+  if ($user->d1 && !empty($texts[1]))
+  {
+    if (!empty($out))
+      $out .= chr(10);
+    $out .= $texts[1];
+  }
   
-  if (strlen($out) > 0)
+  if (!empty($out))
     send_message($out, $user->user_id);
 }
 
