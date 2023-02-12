@@ -13,6 +13,7 @@ class CommandCtx
 
   public string $user_id = "";
   public string $chat_id = "" ;
+  public array $tokens;
 }
 
 
@@ -79,6 +80,17 @@ function cmd_default(CommandCtx $ctx)
   send_message(get_bdays_formatted(2), $ctx->chat_id);
 }
 
+function cmd_add_dbay(CommandCtx $ctx)
+{
+  send_message(' popo', $ctx->chat_id);
+  send_message('popo ', $ctx->chat_id);
+  send_message(' ', $ctx->chat_id);
+  send_message('', $ctx->chat_id);
+
+  for ($i = 0; $i < len($ctx->tokens); $i++)
+    send_message($ctx->tokens[i], $ctx->chat_id);
+}
+
 
 class BotCommand
 {
@@ -104,6 +116,7 @@ function get_commands() : array
   array_push($commands, new BotCommand('/d0', 'cmd_d0', true));
   array_push($commands, new BotCommand('/d1', 'cmd_d1', true));
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
+  array_push($commands, new BotCommand('/add', 'cmd_add_dbay', true));
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;
