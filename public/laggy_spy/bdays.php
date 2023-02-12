@@ -134,7 +134,7 @@ function validate_add_bday_pars(string $name, string $date) : string
 
   $max_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
   if ($day > $max_days)
-    return 'Указанный тобой месяц содержит всего '.$max_days.' дней! Уточни как число...';
+    return 'Указанный тобой месяц содержит всего '.$max_days.' дней! Уточни пожалуйста число...';
 
   if (strtotime($date) > strtotime('now'))
     return 'День рождения не может быть в будущем! Попробуй ещё раз';
