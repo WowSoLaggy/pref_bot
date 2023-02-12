@@ -144,7 +144,7 @@ function validate_add_bday_pars(string $name, string $date) : string
 
 function add_bday_to_db($connection, string $name, string $date, int $group) : string
 {
-  $query = mysqli_query($connection, 'INSERT INTO bdays_tbl VALUES (NULL, ''.$name.'', \''.$date.'\', 0, '.$group.')');
+  $query = mysqli_query($connection, 'INSERT INTO bdays_tbl VALUES (NULL, \''.$name.'\', \''.$date.'\', 0, '.$group.')');
   $result = mysqli_num_rows($query);
   if (!$result)
     return 'Ой, вроде всё правильно, но что-то не получилось. Напиши Антону - он поможет разобраться';
