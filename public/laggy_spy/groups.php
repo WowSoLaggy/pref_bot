@@ -46,7 +46,7 @@ function get_user_group($connection, string $user_ind) : int
 
 function create_user_group($connection, string $user_ind) : int
 {
-  create_new_group($connection, $owner, false, false);
+  create_new_group($connection, $user_ind, false, false);
   $user_group = get_user_group($connection, $user_ind);
   return $user_group;
 }
