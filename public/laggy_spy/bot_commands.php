@@ -4,6 +4,7 @@ require_once __DIR__.'/bdays.php';
 require_once __DIR__.'/groups.php';
 
 require_once __DIR__.'/../shared/commands.php';
+require_once __DIR__.'/../shared/translate.php';
 
 
 class CommandCtx
@@ -110,10 +111,19 @@ function cmd_add_dbay(CommandCtx $ctx)
   $date = array_pop($ctx->tokens);
   // Combine name from all remain elements
   $name = implode(' ', $ctx->tokens);
-
   $group = get_or_create_group($ctx->user_id);
 
-  send_message('Name: '.$name.chr(10).'Date: '.$date.chr(10).'Group: '.$group, $ctx->chat_id);
+  $result = add_bday($name, $date, $group);
+  if (!empty($result))
+    $response = $result;
+  else
+  {
+    $date_formatted = date('d M', strtotime($date));
+    $date_ru = translate_month_en2ru($date_formatted);
+    $response = 'День рождения '.$date_ru.' у "'.$name.'" успешно добавлен! Спасибо!';
+  }
+
+  send_message($response, $ctx->chat_id);
 }
 
 
