@@ -18,12 +18,12 @@ function get_user_ind($connection, string $user_id) : int
   return $user_ind;
 }
 
-function create_new_group($connection, int $owner, bool $shared, bool $public)
+function create_new_group($connection, int $owner, bool $personal, bool $public)
 {
-  $shared_mysql = $shared ? 'TRUE' : 'FALSE';
+  $personal_mysql = $personal ? 'TRUE' : 'FALSE';
   $public_mysql = $public ? 'TRUE' : 'FALSE';
 
-  $query = 'INSERT INTO groups_tbl VALUES (NULL, '.$owner.', '.$shared_mysql.', '.$public_mysql.')';
+  $query = 'INSERT INTO groups_tbl VALUES (NULL, '.$owner.', '.$personal_mysql.', '.$public_mysql.')';
   $result = mysqli_query($connection, $query);
   if (!$result)
     throw new Exception('Failed to create a group by query: "'.$query.'".');
@@ -31,7 +31,7 @@ function create_new_group($connection, int $owner, bool $shared, bool $public)
 
 function get_user_group($connection, string $user_ind) : int
 {
-  $query = 'SELECT id FROM groups_tbl WHERE owner='.$user_ind.' AND shared=FALSE LIMIT 1';
+  $query = 'SELECT id FROM groups_tbl WHERE owner='.$user_ind.' AND personal=TRUE LIMIT 1';
   $result = mysqli_query($connection, $query);
   
   if (mysqli_num_rows($result) == 0)
@@ -46,7 +46,7 @@ function get_user_group($connection, string $user_ind) : int
 
 function create_user_group($connection, string $user_ind) : int
 {
-  create_new_group($connection, $user_ind, false, false);
+  create_new_group($connection, $user_ind, true, false);
   $user_group = get_user_group($connection, $user_ind);
   return $user_group;
 }

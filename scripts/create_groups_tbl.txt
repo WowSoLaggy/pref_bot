@@ -1,4 +1,4 @@
-// shared / personal - all users can subscribe to shared groups (if allowed); Only owner can subscribe to personal group (and actually cannot unsubscribe :) )
+// personal / common - all users can subscribe to common (shared) groups (if allowed); Only owner can subscribe to personal group (and actually cannot unsubscribe :) )
 // public / private - any user can join public group. However subscribing private group requires invite from owner
 
 DROP TABLE IF EXISTS groups_tbl;
@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS groups_tbl;
 CREATE TABLE groups_tbl (
   id        INT     NOT NULL AUTO_INCREMENT,
   owner     TEXT    NOT NULL,
-  shared    BOOLEAN NOT NULL,
+  personal  BOOLEAN NOT NULL,
   public    BOOLEAN NOT NULL,
   
   PRIMARY KEY (id)
