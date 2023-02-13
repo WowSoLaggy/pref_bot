@@ -152,6 +152,22 @@ function add_bday_to_db($connection, string $name, string $date, int $group) : s
   return '';
 }
 
+// Returns true if duplicate exists
+function check_duplicate_in_db($connection, string $name, string $date, int $group) : bool
+{
+  $query = 'SELECT COUNT(*) as CNT FROM bdays_tbl WHERE `name`=\''.$name.'\' AND `date`=\''.$date.'\' AND `group`='.$group;
+  $result = mysqli_query($connection, $query);
+
+  $num_rows = mysqli_num_rows($result);
+  if ($num_rows != 1)
+    throw new Exception('Incorrect num rows for: \''.$query.'\'');
+  $count = mysqli_result($result, 0, 'CNT');
+
+  mysqli_free_result($result);
+
+  return $count > 0;
+}
+
 // Returns an error message or empty string if successfully added
 function add_bday(string $name, string $date, int $group) : string
 {
@@ -160,7 +176,10 @@ function add_bday(string $name, string $date, int $group) : string
     return $validation_result;
 
   $connection = connect();
-  $result = add_bday_to_db($connection, $name, $date, $group);
+  if (check_duplicate_in_db($connection, $name, $date, $group))
+    $result = 'Ой, а такой день рождения уже есть! Проверь сам!';
+  else
+    $result = add_bday_to_db($connection, $name, $date, $group);
   disconnect($connection);
 
   return $result;
