@@ -90,14 +90,24 @@ function get_user_add_help() : string
   $text = 'Чтобы добавить новый ДР:'.chr(10);
   $text .= '/add <имя> <yyyy-mm-dd>'.chr(10);
   $text .= 'Например:'.chr(10);
-  $text .= '/add Антон 1988-11-13';
+  $text .= '/add Тони Монтана 1940-04-25';
+
+  return $text;
+}
+
+function get_user_del_help() : string
+{
+  $text = 'Ты можешь удалить только те ДР, которые сам и задал. Чтобы это сделать напиши:'.chr(10);
+  $text .= '/del <имя> <yyyy-mm-dd>'.chr(10);
+  $text .= 'Например:'.chr(10);
+  $text .= '/del Тони Монтана 1940-04-25';
 
   return $text;
 }
 
 function cmd_add_bday(CommandCtx $ctx)
 {
-  // /add Anton 1988-11-13
+  // /add Tony Montana 1988-11-13
   if (count($ctx->tokens) < 3)
   {
     send_message(get_user_add_help(), $ctx->chat_id);
@@ -121,6 +131,37 @@ function cmd_add_bday(CommandCtx $ctx)
     $date_formatted = date('d M', strtotime($date));
     $date_ru = translate_month_en2ru($date_formatted);
     $response = 'День рождения '.$date_ru.' у "'.$name.'" успешно добавлен! Спасибо!';
+  }
+
+  send_message($response, $ctx->chat_id);
+}
+
+function cmd_del_bday(CommandCtx $ctx)
+{
+  // /del Tony Montana 1988-11-13
+  if (count($ctx->tokens) < 3)
+  {
+    send_message(get_user_del_help(), $ctx->chat_id);
+    return;
+  }
+
+  // Remove command from tokens
+  array_shift($ctx->tokens);
+  
+  // Get date as the last element
+  $date = array_pop($ctx->tokens);
+  // Combine name from all remain elements
+  $name = implode(' ', $ctx->tokens);
+  $group = get_or_create_group($ctx->user_id);
+
+  $result = del_bday($name, $date, $group);
+  if (!empty($result))
+    $response = $result;
+  else
+  {
+    $date_formatted = date('d M', strtotime($date));
+    $date_ru = translate_month_en2ru($date_formatted);
+    $response = 'Хорошо, я удалил день рождения '.$date_ru.' у "'.$name.'"';
   }
 
   send_message($response, $ctx->chat_id);
@@ -152,6 +193,7 @@ function get_commands() : array
   array_push($commands, new BotCommand('/d1', 'cmd_d1', true));
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
   array_push($commands, new BotCommand('/add', 'cmd_add_bday', true));
+  array_push($commands, new BotCommand('/del', 'cmd_del_bday', true));
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;

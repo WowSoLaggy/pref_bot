@@ -106,7 +106,7 @@ function get_bdays_formatted(int $months_to_show)
   return $out;
 }
 
-function validate_add_bday_pars(string $name, string $date) : string
+function validate_bday_pars(string $name, string $date) : string
 {
   if (!preg_match('/^([а-яА-ЯЁёa-zA-Z0-9 ]+)$/u', $name))
     return 'Имя должно содержать только буквы и цифры (А-Я, а-я, A-Z, a-z, 0-9)!'.chr(10).'Попробуй ещё раз, это не сложно';
@@ -152,8 +152,18 @@ function add_bday_to_db($connection, string $name, string $date, int $group) : s
   return '';
 }
 
-// Returns true if duplicate exists
-function check_duplicate_in_db($connection, string $name, string $date, int $group) : bool
+function del_bday_from_db($connection, string $name, string $date, int $group) : string
+{
+  $query = 'DELETE FROM bdays_tbl WHERE `name`=\''.$name.'\' AND `date`=\''.$date.'\' AND `group`='.$group;
+  $result = mysqli_query($connection, $query);
+  if (!$result)
+    return 'Ой, вроде всё правильно, но что-то не получилось. Напиши Антону - он поможет разобраться';
+
+  return '';
+}
+
+// Returns true if such a bday already exists
+function check_exists_in_db($connection, string $name, string $date, int $group) : bool
 {
   $query = 'SELECT COUNT(*) as CNT FROM bdays_tbl WHERE `name`=\''.$name.'\' AND `date`=\''.$date.'\' AND `group`='.$group;
   $result = mysqli_query($connection, $query);
@@ -171,15 +181,32 @@ function check_duplicate_in_db($connection, string $name, string $date, int $gro
 // Returns an error message or empty string if successfully added
 function add_bday(string $name, string $date, int $group) : string
 {
-  $validation_result = validate_add_bday_pars($name, $date);
+  $validation_result = validate_bday_pars($name, $date);
   if (!empty($validation_result))
     return $validation_result;
 
   $connection = connect();
-  if (check_duplicate_in_db($connection, $name, $date, $group))
+  if (check_exists_in_db($connection, $name, $date, $group))
     $result = 'Ой, а такой день рождения уже есть! Проверь сам!';
   else
     $result = add_bday_to_db($connection, $name, $date, $group);
+  disconnect($connection);
+
+  return $result;
+}
+
+// Returns an error message or empty string if successfully deleted
+function del_bday(string $name, string $date, int $group) : string
+{
+  $validation_result = validate_bday_pars($name, $date);
+  if (!empty($validation_result))
+    return $validation_result;
+
+  $connection = connect();
+  if (!check_exists_in_db($connection, $name, $date, $group))
+    $result = 'Что-то я не могу найти такой день рождения... Перепроверь имя и дату - они должны точно совпадать';
+  else
+    $result = del_bday_from_db($connection, $name, $date, $group);
   disconnect($connection);
 
   return $result;
