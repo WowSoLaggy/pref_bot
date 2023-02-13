@@ -108,7 +108,7 @@ function get_bdays_formatted(int $months_to_show)
 
 function validate_add_bday_pars(string $name, string $date) : string
 {
-  if (!preg_match('/^([а-яА-ЯЁёa-zA-Z0-9_]+)$/u', $name))
+  if (!preg_match('/^([а-яА-ЯЁёa-zA-Z0-9 ]+)$/u', $name))
     return 'Имя должно содержать только буквы и цифры (А-Я, а-я, A-Z, a-z, 0-9)!'.chr(10).'Попробуй ещё раз, это не сложно';
   
   $tokens = explode('-', $date);
