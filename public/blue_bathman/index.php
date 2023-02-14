@@ -22,10 +22,16 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
     return false;
   }
 
+  $tokens = explode(' ', $text);
+  if (empty($tokens))
+    return true;
+
+  $input_cmd = $tokens[0];
+
   $cmds = get_commands();
   foreach ($cmds as &$cmd)
   {
-    if ($cmd->command !== $text && !empty($cmd->command))
+    if (($input_cmd !== $cmd->command) && !empty($cmd->command))
       continue;
     
     $granted = $user->is_admin || !$cmd->admin;
@@ -35,8 +41,9 @@ function process(string $user_id, string $chat_id, string $text = null) : bool
       return false;
     }
 
+    $ctx = new CommandCtx($user_id, $chat_id, $tokens);
     $func = $cmd->func;
-    $func($user_id, $chat_id);
+    $func($ctx);
     break;
   }
 

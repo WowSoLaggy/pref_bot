@@ -38,4 +38,20 @@ function get_user(string $user_id)
   return $user;
 }
 
+
+function get_user_ind($connection, string $user_id) : int
+{
+  $query = 'SELECT id FROM users_tbl WHERE user_id='.$user_id.' LIMIT 1';
+  $result = mysqli_query($connection, $query);
+  
+  if (mysqli_num_rows($result) == 0)
+    throw new Exception('No user found for user_id: \''.$user_id.'\'');
+
+  $user_ind = mysqli_result($result, 0, 'id');
+
+  mysqli_free_result($result);
+
+  return $user_ind;
+}
+
 ?>
