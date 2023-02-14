@@ -29,12 +29,17 @@ function cmd_fake(CommandCtx $ctx)
 
 function get_help() : string
 {
-  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10);
+  $text = 'Привет! Я бот - Голубой Банщик.'.chr(10).chr(10);
+
   $text .= 'Я умею показывать дни рождения, если ты меня попросишь:'.chr(10);
   $text .= '/bd (или любое другое слово) - ближайшие 2 месяца'.chr(10);
   $text .= '/all (или /все) - на весь год'.chr(10).chr(10);
 
-  $text .= 'Также ты можешь добавлять свои дни рождения (правда видны они будут пока что только тебе), и конечно же удалять их:'.chr(10);
+  $text .= 'Кстати, ты можешь попросить меня предупреждать о предстоящих днях рождения за пару часов или за сутки (можно и так, и так - мне несложно):'.chr(10);
+  $text .= '/d0 - вкл/выкл предупреждалку за пару часов'.chr(10);
+  $text .= '/d1 - вкл/выкл предупреждалку за сутки'.chr(10).chr(10);
+
+  $text .= 'Ещё ты можешь добавлять свои дни рождения (правда видны они будут пока что только тебе), и конечно же удалять их:'.chr(10);
   $text .= '/add <name> <date> - добавить ДР. Напиши /add для подробной помощи как это сделать'.chr(10);
   $text .= '/del <name> <date> - удалить ДР. Напиши /del для подробной помощи как это сделать'.chr(10);
 
@@ -191,13 +196,14 @@ function get_commands() : array
   $commands = array();
 
   array_push($commands, new BotCommand('/start', 'cmd_start', false));
+  array_push($commands, new BotCommand('/help', 'cmd_start', false));
   array_push($commands, new BotCommand('/allgroups', 'cmd_all_groups', true));
   array_push($commands, new BotCommand('/all', 'cmd_all', false));
-  array_push($commands, new BotCommand('/d0', 'cmd_d0', true));
-  array_push($commands, new BotCommand('/d1', 'cmd_d1', true));
+  array_push($commands, new BotCommand('/d0', 'cmd_d0', false));
+  array_push($commands, new BotCommand('/d1', 'cmd_d1', false));
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
-  array_push($commands, new BotCommand('/add', 'cmd_add_bday', true));
-  array_push($commands, new BotCommand('/del', 'cmd_del_bday', true));
+  array_push($commands, new BotCommand('/add', 'cmd_add_bday', false));
+  array_push($commands, new BotCommand('/del', 'cmd_del_bday', false));
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;
