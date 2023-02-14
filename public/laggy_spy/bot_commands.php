@@ -50,7 +50,7 @@ function cmd_all_groups(CommandCtx $ctx)
 
 function cmd_all(CommandCtx $ctx)
 {
-  send_message(get_bdays_formatted(12), $ctx->chat_id);
+  send_message(get_bdays_formatted($ctx->user_id, 12), $ctx->chat_id);
 }
 
 function cmd_d0(CommandCtx $ctx)
@@ -82,7 +82,7 @@ function cmd_rem(CommandCtx $ctx)
 
 function cmd_default(CommandCtx $ctx)
 {
-  send_message(get_bdays_formatted(2), $ctx->chat_id);
+  send_message(get_bdays_formatted($ctx->user_id, 2), $ctx->chat_id);
 }
 
 function get_user_add_help() : string

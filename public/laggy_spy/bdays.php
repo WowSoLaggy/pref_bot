@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/subs.php';
+
 require_once __DIR__.'/../shared/mysql.php';
 require_once __DIR__.'/../shared/translate.php';
 
@@ -13,11 +15,18 @@ class BDay
 }
 
 
-function get_bdays_from_db($connection)
+//echo get_bdays_formatted('305099932', 12);
+
+
+function get_bdays_from_db($connection, string $user_id)
 {
-  $bdays = array();
+  $subs = get_user_subs_by_id($connection, $user_id, true);
+  $subs_str = implode(',', $subs);
+
+  $query = 'SELECT id, name, date FROM bdays_tbl WHERE NOT `fake` AND `group` IN ('.$subs_str.')';
+  $result = mysqli_query($connection, $query);
   
-  $result = mysqli_query($connection, "SELECT id, name, date FROM bdays_tbl WHERE NOT fake");
+  $bdays = array();
   $num_bdays = mysqli_num_rows($result);
   for ($i = 0; $i < $num_bdays; $i++)
   {
@@ -43,10 +52,10 @@ function bdays_sorter($user1, $user2)
 }
 
 
-function get_bdays()
+function get_bdays_sorted(string $user_id)
 {
   $connection = connect();
-  $bdays = get_bdays_from_db($connection);
+  $bdays = get_bdays_from_db($connection, $user_id);
   disconnect($connection);
 
   usort($bdays, "bdays_sorter");
@@ -62,9 +71,9 @@ function get_bdays()
 }
 
 
-function get_bdays_formatted(int $months_to_show)
+function get_bdays_formatted(string $user_id, int $months_to_show)
 {
-  $bdays = get_bdays();
+  $bdays = get_bdays_sorted($user_id);
 
   $out = "";
   $cur_month = "";
