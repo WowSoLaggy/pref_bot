@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/bdays.php';
+require_once __DIR__.'/cals.php';
 require_once __DIR__.'/groups.php';
 
 require_once __DIR__.'/../shared/commands.php';
@@ -176,6 +177,14 @@ function cmd_del_bday(CommandCtx $ctx)
   send_message($response, $ctx->chat_id);
 }
 
+function cmd_show_cals(CommandCtx $ctx)
+{
+  $response = get_available_cals_for_user_formatted($ctx->user_id);
+  if (empty($response))
+    $response = 'Что-то пока не нашлось никаких календарей. А попробуй создать свой!';
+  send_message($response, $ctx->chat_id);
+}
+
 
 class BotCommand
 {
@@ -197,13 +206,21 @@ function get_commands() : array
 
   array_push($commands, new BotCommand('/start', 'cmd_start', false));
   array_push($commands, new BotCommand('/help', 'cmd_start', false));
+
   array_push($commands, new BotCommand('/allgroups', 'cmd_all_groups', true));
+
   array_push($commands, new BotCommand('/all', 'cmd_all', false));
+  
   array_push($commands, new BotCommand('/d0', 'cmd_d0', false));
   array_push($commands, new BotCommand('/d1', 'cmd_d1', false));
+  
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
+  
   array_push($commands, new BotCommand('/add', 'cmd_add_bday', false));
   array_push($commands, new BotCommand('/del', 'cmd_del_bday', false));
+  
+  array_push($commands, new BotCommand('/cals', 'cmd_show_cals', false));
+  
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;
