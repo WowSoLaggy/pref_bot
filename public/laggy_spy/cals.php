@@ -10,7 +10,8 @@ class Calendar
 {
   public $id = -1;
   public $name = '';
-  public $owner = '';
+  public $owner = -1;
+  public $owner_name = '';
   public $public = false;
   public $dates_count = 0;
 }
@@ -89,7 +90,7 @@ function get_available_cals_for_user_formatted(string $user_id) : string
   $cals_other = array();
   foreach ($cals as &$cal)
   {
-    $cal->owner = $owners_map[$cal->owner];
+    $cal->owner_name = $owners_map[$cal->owner];
 
     if ($cal->owner == $user_ind)
       array_push($cals_own, $cal);
@@ -106,7 +107,7 @@ function get_available_cals_for_user_formatted(string $user_id) : string
     {
       $text .= '"'.$cal->name.'" (событий: '.$cal->dates_count;
       if ($with_owner)
-        $text .= ', админ: '.$cal->owner;
+        $text .= ', админ: '.$cal->owner_name;
       $text .= ')'.chr(10);
     }
   }
