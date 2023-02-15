@@ -42,7 +42,10 @@ function get_help() : string
 
   $text .= 'Ещё ты можешь добавлять свои дни рождения (правда видны они будут пока что только тебе), и конечно же удалять их:'.chr(10);
   $text .= '/add <name> <date> - добавить ДР. Напиши /add для подробной помощи как это сделать'.chr(10);
-  $text .= '/del <name> <date> - удалить ДР. Напиши /del для подробной помощи как это сделать'.chr(10);
+  $text .= '/del <name> <date> - удалить ДР. Напиши /del для подробной помощи как это сделать'.chr(10).chr(10);
+
+  $text .= 'А ещё ты можешь посмотреть (красивое) список календарей - твоих или созданных другими:'.chr(10);
+  $text .= '/cals - вывести список доступных календарей'.chr(10);
 
   return $text;
 }
@@ -220,7 +223,7 @@ function get_commands() : array
   array_push($commands, new BotCommand('/del', 'cmd_del_bday', false));
   
   array_push($commands, new BotCommand('/cals', 'cmd_show_cals', false));
-  
+
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
   return $commands;
