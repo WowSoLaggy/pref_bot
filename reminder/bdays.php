@@ -72,11 +72,12 @@ function get_bdays_d1(array $bdays) : array
 function get_full_years(BDay $bday) : int
 {
   $date_birth = new DateTime($bday->date);
-  $date_now = new DateTime(date('d.m.Y', strtotime("-1 days")));
-  $date_diff = $date_now->diff($date_birth);
-  $years_full = $date_diff->y;
+  $date_now = new DateTime(date('Y'));
+  
+  $year_of_birth = $date_birth->format('Y');
+  $year_now = $date_now->format('Y');
 
-  return $years_full;
+  return $year_now - $year_of_birth;
 }
 
 
