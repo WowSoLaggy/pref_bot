@@ -20,7 +20,7 @@ function log_data(array $from, string $chat_id, string $text, bool $is_auth)
   $log .= '- ';
   $log .= $is_auth ? 'GRANT' : 'DENY';
   $log .= ' - ';
-  $log .= is_null($text) ? 'NO TEXT' : $text;
+  $log .= empty($text) ? 'NO TEXT' : $text;
 
   log_text($log);
 }
@@ -30,7 +30,7 @@ function log_message(array $message, bool $is_auth)
 {
   $from = $message['from'];
   $chat_id = $message['chat']['id'];
-  $text = isset($message['text']) ? $message['text'] : null;
+  $text = isset($message['text']) ? $message['text'] : '';
 
   log_data($from, $chat_id, $text, $is_auth);
 }
