@@ -38,14 +38,7 @@ function get_help() : string
 
   $text .= 'Кстати, ты можешь попросить меня предупреждать о предстоящих днях рождения за пару часов или за сутки (можно и так, и так - мне несложно):'.chr(10);
   $text .= '/d0 - вкл/выкл предупреждалку за пару часов'.chr(10);
-  $text .= '/d1 - вкл/выкл предупреждалку за сутки'.chr(10).chr(10);
-
-  $text .= 'Ещё ты можешь добавлять свои дни рождения (правда видны они будут пока что только тебе), и конечно же удалять их:'.chr(10);
-  $text .= '/add <name> <date> - добавить ДР. Напиши /add для подробной помощи как это сделать'.chr(10);
-  $text .= '/del <name> <date> - удалить ДР. Напиши /del для подробной помощи как это сделать'.chr(10).chr(10);
-
-  $text .= 'А ещё ты можешь посмотреть (красивое) список календарей - твоих или созданных другими:'.chr(10);
-  $text .= '/cals - вывести список доступных календарей'.chr(10);
+  $text .= '/d1 - вкл/выкл предупреждалку за сутки'.chr(10);
 
   return $text;
 }
@@ -219,10 +212,10 @@ function get_commands() : array
   
   array_push($commands, new BotCommand('/rem', 'cmd_rem', true));
   
-  array_push($commands, new BotCommand('/add', 'cmd_add_bday', false));
-  array_push($commands, new BotCommand('/del', 'cmd_del_bday', false));
+  array_push($commands, new BotCommand('/add', 'cmd_add_bday', true));
+  array_push($commands, new BotCommand('/del', 'cmd_del_bday', true));
   
-  array_push($commands, new BotCommand('/cals', 'cmd_show_cals', false));
+  array_push($commands, new BotCommand('/cals', 'cmd_show_cals', true));
 
   array_push($commands, new BotCommand('', 'cmd_default', false));
 
